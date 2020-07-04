@@ -8,5 +8,11 @@
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "Steven Degutis"
+  "author": "Steven Degutis",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.21"
+  }
 }
