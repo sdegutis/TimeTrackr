@@ -12,11 +12,8 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
-    "htm": "^3.0.4",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.21",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "mongoose": "^5.9.21"
   },
   "devDependencies": {
     "@types/jest": "^26.0.4",
