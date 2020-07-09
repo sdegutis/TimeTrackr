@@ -37,6 +37,8 @@ export const App = () => {
 
       authToken = token;
 
+      console.log(jwt_decode(authToken));
+
       request('GET', '/api/users').then(users => {
         console.log(users);
       });
