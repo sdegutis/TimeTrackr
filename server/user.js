@@ -58,6 +58,8 @@ const { requireAuthLevel } = require('./helpers');
  */
 async function createUser(req) {
   const { name, email, password } = req.body;
+  if (!name || !email || !password)
+    return [400, { error: "Required: name, email, password" }];
 
   const found = await User.findOne({ email });
   if (found) return [409, {}];
