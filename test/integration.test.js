@@ -48,3 +48,22 @@ test('creating accounts', async () => {
     },
   ]);
 });
+
+test('account must be unique by email', async () => {
+  await request(app).post('/api/users').send({
+    name: 'me',
+    email: 'me@example.com',
+    password: 'foo',
+  });
+
+  const response = await request(app).post('/api/users').send({
+    name: 'me',
+    email: 'me@example.com',
+    password: 'foo',
+  });
+
+  expect(response.status).toBe(409);
+
+  const count = await User.countDocuments();
+  expect(count).toBe(1);
+});
