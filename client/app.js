@@ -11,31 +11,38 @@ export const Timer = ({ count }) => {
   `;
 };
 
+let authToken;
+
+async function request(method, url, body) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (authToken) headers.Authorization = `Bearer ${authToken}`;
+  const response = await fetch(url, {
+    method,
+    headers,
+    body: JSON.stringify(body),
+  });
+  return await response.json();
+}
+
 export const App = () => {
   const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
 
-    (async () => {
+    request('POST', '/api/users/auth', {
+      email: 'me@example.com',
+      password: 'foo',
+    }).then(({ token }) => {
+      console.log('token:', token);
 
-      const response = await fetch('/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: 'me',
-          email: 'me3@example.com',
-          password: 'foo',
-        }),
+      authToken = token;
+
+      request('GET', '/api/users').then(users => {
+        console.log(users);
       });
 
-      if (response.status !== 200) {
-        console.log('Error:', response.status);
-      }
 
-      const { token } = await response.json();
-
-      console.log('token:', token);
-    })();
+    });
 
     setInterval(() => {
       setCount(oldCount => oldCount + 1);
