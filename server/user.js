@@ -82,11 +82,11 @@ async function createUser(req) {
  * @param {import('express').Request} req
  */
 async function listUsers(req) {
-  const me = await User.findById(req.auth.id);
+  // const me = await User.findById(req.auth.id);
   // console.log({ me });
 
   const users = await User.find();
-  return [200, users];
+  return [200, { users }];
 }
 
 /**
@@ -94,7 +94,8 @@ async function listUsers(req) {
  */
 async function login(req) {
   const { email, password } = req.body;
-  if (!email || !password) return [400, { "error": "Requires both 'email' and 'password'" }];
+  if (!email || !password)
+    return [400, { error: "Required: email, password" }];
 
   const user = await User.findOne({ email });
 
