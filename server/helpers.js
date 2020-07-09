@@ -1,18 +1,30 @@
 const jwt = require('jsonwebtoken');
 
 /**
+ * @param {import('express').Request} req
+ */
+function tokenFromBearer(req) {
+  const auth = req.headers['authorization'];
+  if (!auth) return null;
+
+  const authMatch = auth.match(/Bearer (.+)/);
+  if (!authMatch) return null;
+
+  const [, token] = authMatch;
+  console.log('token from bearer', token);
+  return token;
+}
+
+/**
  * @param {number} requiredLevel
  * @returns {import('express').Handler}
  */
 exports.requireAuthLevel = (requiredLevel) => {
   return (req, res, next) => {
-    const auth = req.headers['authorization'];
-    if (!auth) return res.sendStatus(401);
-
-    const authMatch = auth.match(/Bearer (.+)/);
-    if (!authMatch) return res.sendStatus(401);
-
-    const [, token] = authMatch;
+    // Always prefer Bearer
+    const token = tokenFromBearer(req) || req.cookies.jwt;
+    if (!token) return res.sendStatus(401);
+    console.log('token from cookie', req.cookies.jwt);
 
     let tokenData;
     try { tokenData = jwt.verify(token, process.env.JWT_SECRET); }
@@ -34,7 +46,7 @@ exports.requireAuthLevel = (requiredLevel) => {
 exports.asyncHandler = (fn) => {
   return (req, res, next) => {
     try {
-      fn(req).then(([code, json]) => {
+      fn(req, res).then(([code, json]) => {
         res.status(code).json(json);
         next();
       });
@@ -48,5 +60,6 @@ exports.asyncHandler = (fn) => {
 /**
  * @callback AsyncHandler
  * @param {import('express').Request} req
+ * @param {import('express').Response} res
  * @returns {Promise<[number, object]>}
  */

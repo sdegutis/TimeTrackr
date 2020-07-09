@@ -97,7 +97,7 @@ async function listUsers(req) {
 /**
  * @type {import('./helpers').AsyncHandler}
  */
-async function login(req) {
+async function login(req, res) {
   const { email, password } = req.body;
   if (!email || !password)
     return [400, { error: "Required: email, password" }];
@@ -108,7 +108,14 @@ async function login(req) {
   if (!user) return [401, {}];
   if (!user.checkPassword(password)) return [401, {}];
 
-  return [200, { token: user.generateToken() }];
+  const token = user.generateToken();
+
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    secure: true,
+  });
+
+  return [200, { token }];
 }
 
 /**

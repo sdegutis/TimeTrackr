@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const user = require('./user');
@@ -20,6 +21,7 @@ router.use(bodyParser.json({
   ]
 }));
 
+app.use(cookieParser());
 app.use('/api', router);
 
 user.setupRoutes(router);
