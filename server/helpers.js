@@ -26,8 +26,9 @@ exports.requireAuthLevel = (requiredLevel) => {
     if (!token) return res.sendStatus(401);
     console.log('token from cookie', req.cookies.jwt);
 
+    /** @type {{authLevel: number}} */
     let tokenData;
-    try { tokenData = jwt.verify(token, process.env.JWT_SECRET); }
+    try { tokenData = /** @type{*} */(jwt.verify(token, process.env.JWT_SECRET)); }
     catch (e) { return res.sendStatus(401); }
 
     if (tokenData.authLevel < requiredLevel) {
