@@ -11,7 +11,6 @@ function tokenFromBearer(req) {
   if (!authMatch) return null;
 
   const [, token] = authMatch;
-  console.log('token from bearer', token);
   return token;
 }
 
@@ -24,7 +23,6 @@ exports.requireAuthLevel = (requiredLevel) => {
     // Always prefer Bearer
     const token = tokenFromBearer(req) || req.cookies.jwt;
     if (!token) return res.sendStatus(401);
-    console.log('token from cookie', req.cookies.jwt);
 
     /** @type {{authLevel: number}} */
     let tokenData;
