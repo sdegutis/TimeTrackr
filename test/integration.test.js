@@ -7,7 +7,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 let mongoServer;
 
-beforeAll(async () => {
+beforeEach(async () => {
   mongoServer = new MongoMemoryServer();
   const mongoUri = await mongoServer.getUri();
   const opts = {
@@ -19,7 +19,7 @@ beforeAll(async () => {
   });
 });
 
-afterAll(async () => {
+afterEach(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
 });
@@ -67,3 +67,49 @@ test('account must be unique by email', async () => {
   const count = await User.countDocuments();
   expect(count).toBe(1);
 });
+
+test('listing users', async () => {
+  const token = await createManager('me@example.com');
+  console.log(token);
+  const response = await request(app)
+    .get('/api/users')
+    .set({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    });
+
+  expect(response.status).toBe(200);
+  expect(response.body).toMatchObject({
+    users: [
+      { email: 'me@example.com', authLevel: AUTH.MANAGER, },
+    ],
+  });
+});
+
+
+// Helpers
+
+async function createManager(email) {
+  await request(app)
+    .post('/api/users')
+    .send({
+      name: email,
+      email: email,
+      password: 'foo',
+    })
+    .set({ 'Content-Type': 'application/json' });
+
+  const user = await User.findOne({ email });
+  await user.setAuthLevel('manager');
+  await user.save();
+
+  const resp = await request(app)
+    .post('/api/users/auth')
+    .send({
+      email: email,
+      password: 'foo',
+    })
+    .set({ 'Content-Type': 'application/json' });
+
+  return resp.body.token;
+}

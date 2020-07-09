@@ -42,7 +42,7 @@ userSchema.method({
 
 /**
  * @this {InstanceType<User>}
- * @param {string} role
+ * @param {'admin' | 'manager' | 'user'} role
  */
 function setAuthLevel(role) {
   this.authLevel = {
