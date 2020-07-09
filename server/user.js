@@ -35,6 +35,14 @@ userSchema.methods.generateToken = function () {
   }, process.env.JWT_SECRET);
 };
 
+userSchema.methods.setAuthLevel = function (role) {
+  this.authLevel = {
+    user: AUTH.USER,
+    manager: AUTH.MANAGER,
+    admin: AUTH.ADMIN,
+  }[role];
+};
+
 const User = mongoose.model('Users', userSchema);
 
 
