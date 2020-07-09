@@ -32,6 +32,11 @@ userSchema.methods.generateToken = function () {
     id: this._id,
     email: this.email,
     authLevel: this.authLevel,
+    auth: {
+      [AUTH.USER]: 'user',
+      [AUTH.MANAGER]: 'manager',
+      [AUTH.ADMIN]: 'admin',
+    }[this.authLevel],
   }, process.env.JWT_SECRET);
 };
 
