@@ -70,7 +70,6 @@ test('account must be unique by email', async () => {
 
 test('listing users', async () => {
   const token = await createManager('me@example.com');
-  console.log(token);
   const response = await request(app)
     .get('/api/users')
     .set({
