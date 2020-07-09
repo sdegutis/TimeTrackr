@@ -35,7 +35,6 @@ exports.requireAuthLevel = (requiredLevel) => {
 exports.asyncHandler = (fn) => {
   return (req, res, next) => {
     try {
-      console.log(req.params);
       fn(req).then(([code, json]) => {
         res.status(code).json(json);
         next();

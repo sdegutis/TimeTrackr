@@ -81,7 +81,7 @@ async function createUser(req) {
  */
 async function listUsers(req) {
   const me = await User.findById(req.auth.id);
-  console.log({ me });
+  // console.log({ me });
 
   const users = await User.find();
   return [200, users];

@@ -6,7 +6,6 @@ const user = require('./user');
 
 const app = express();
 
-console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
   console.log('Also running file server for convenience.');
   app.use(express.static(path.join(__dirname, '../client')));
