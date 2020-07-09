@@ -98,7 +98,7 @@ const { requireAuthLevel } = require('./helpers');
 /**
  * @type {import('./helpers').AsyncHandler}
  */
-async function createUser(req) {
+async function createUser(req, res) {
   const { name, email, password } = req.body;
   if (!name || !email || !password)
     return [400, { error: "Required: name, email, password" }];
@@ -118,7 +118,23 @@ async function createUser(req) {
   user.usePassword(password);
   await user.save();
 
-  return [200, { token: user.generateToken() }];
+  return signInAsUser(res, user);
+}
+
+/**
+ * @param {import('express').Response} res
+ * @param {InstanceType<User>} user
+ * @returns {[number, object]}
+ */
+function signInAsUser(res, user) {
+  const token = user.generateToken();
+
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    secure: true,
+  });
+
+  return [200, { token }];
 }
 
 /**
@@ -146,14 +162,7 @@ async function login(req, res) {
   if (!user) return [401, {}];
   if (!user.checkPassword(password)) return [401, {}];
 
-  const token = user.generateToken();
-
-  res.cookie('jwt', token, {
-    httpOnly: true,
-    secure: true,
-  });
-
-  return [200, { token }];
+  return signInAsUser(res, user);
 }
 
 /**
