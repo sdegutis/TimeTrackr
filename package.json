@@ -1,7 +1,7 @@
 {
   "name": "timetrackr",
   "version": "0.0.1",
-  "description": "",
+  "description": "My personal time tracker",
   "main": "index.js",
   "scripts": {
     "test": "jest .",
