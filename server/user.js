@@ -115,4 +115,4 @@ function setupRoutes(app) {
 
 }
 
-module.exports = { User, setupRoutes };
+module.exports = { User, setupRoutes, AUTH };

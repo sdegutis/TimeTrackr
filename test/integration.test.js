@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const request = require('supertest');
 
 const mongoose = require('mongoose');
@@ -23,7 +25,7 @@ afterAll(async () => {
 });
 
 const { app } = require('../server/app');
-const { User } = require('../server/user');
+const { User, AUTH } = require('../server/user');
 
 test('creating accounts', async () => {
   const response = await request(app).post('/api/users').send({
@@ -36,6 +38,13 @@ test('creating accounts', async () => {
     token: /.+/,
   });
 
-  const count = await User.countDocuments();
-  expect(count).toEqual(1);
+  const users = await User.find();
+  expect(users).toMatchObject([
+    {
+      email: 'me@example.com',
+      name: 'me',
+      hash: /.+/,
+      authLevel: AUTH.USER,
+    },
+  ]);
 });

@@ -20,6 +20,13 @@ Install NPM dependencies:
 $ npm install
 ```
 
+## Development environment
+
+These are recommended:
+
+* VS Code
+* [Jest Runner](https://github.com/jest-community/vscode-jest) plugin
+
 ## Run app
 
 * Run `npm start`
