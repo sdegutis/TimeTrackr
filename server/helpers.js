@@ -22,9 +22,8 @@ exports.requireAuthLevel = (requiredLevel) => {
       return res.sendStatus(403);
     }
 
-    req.auth = tokenData;
+    req.body._auth = tokenData;
     return next();
-
   };
 };
 

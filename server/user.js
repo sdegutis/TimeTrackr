@@ -84,8 +84,8 @@ async function createUser(req) {
  * @returns {Promise<[number, object]>}
  */
 async function listUsers(req) {
-  // const me = await User.findById(req.auth.id);
-  // console.log({ me });
+  const me = await User.findById(req.body._auth.id);
+  console.log({ me });
 
   const users = await User.find();
   return [200, { users }];
@@ -110,7 +110,7 @@ async function login(req) {
 }
 
 /**
- * @param {import('express').Express} app
+ * @param {import('express').Router} app
  */
 function setupRoutes(app) {
 
