@@ -15,8 +15,30 @@ export const App = () => {
   const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
+
+    (async () => {
+
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'me',
+          email: 'me3@example.com',
+          password: 'foo',
+        }),
+      });
+
+      if (response.status !== 200) {
+        console.log('Error:', response.status);
+      }
+
+      const { token } = await response.json();
+
+      console.log('token:', token);
+    })();
+
     setInterval(() => {
-      setCount(count => count + 1);
+      setCount(oldCount => oldCount + 1);
     }, 1000);
   }, []);
 
