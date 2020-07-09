@@ -28,7 +28,7 @@ exports.requireAuthLevel = (requiredLevel) => {
 };
 
 /**
- * @param {(req: import('express').Request) => Promise<[number, any]>} fn
+ * @param {AsyncHandler} fn
  * @returns {import('express').Handler}
  */
 exports.asyncHandler = (fn) => {
@@ -44,3 +44,9 @@ exports.asyncHandler = (fn) => {
     }
   };
 };
+
+/**
+ * @callback AsyncHandler
+ * @param {import('express').Request} req
+ * @returns {Promise<[number, object]>}
+ */

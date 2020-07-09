@@ -59,8 +59,7 @@ const { asyncHandler } = require('./helpers');
 const { requireAuthLevel } = require('./helpers');
 
 /**
- * @param {import('express').Request} req
- * @returns {Promise<[number, object]>}
+ * @type {import('./helpers').AsyncHandler}
  */
 async function createUser(req) {
   const { name, email, password } = req.body;
@@ -85,8 +84,7 @@ async function createUser(req) {
 }
 
 /**
- * @param {import('express').Request} req
- * @returns {Promise<[number, object]>}
+ * @type {import('./helpers').AsyncHandler}
  */
 async function listUsers(req) {
   const me = await User.findById(req.body._auth.id);
@@ -97,8 +95,7 @@ async function listUsers(req) {
 }
 
 /**
- * @param {import('express').Request} req
- * @returns {Promise<[number, object]>}
+ * @type {import('./helpers').AsyncHandler}
  */
 async function login(req) {
   const { email, password } = req.body;
