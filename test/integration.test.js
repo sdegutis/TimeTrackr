@@ -1,3 +1,5 @@
+const request = require('supertest');
+
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
@@ -20,6 +22,20 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
-test("basics", () => {
-  expect(1 + 1).toBe(2);
+const { app } = require('../server/app');
+const { User } = require('../server/user');
+
+test('creating accounts', async () => {
+  const response = await request(app).post('/api/users').send({
+    name: 'me',
+    email: 'me@example.com',
+    password: 'foo',
+  });
+
+  expect(response.body).toMatchObject({
+    token: /.+/,
+  });
+
+  const count = await User.countDocuments();
+  expect(count).toEqual(1);
 });
