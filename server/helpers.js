@@ -29,7 +29,7 @@ exports.requireAuthLevel = (requiredLevel) => {
 };
 
 /**
- * @param {(import('express').Request) => Promise<[number, any]>} fn
+ * @param {(req: import('express').Request) => Promise<[number, any]>} fn
  * @returns {import('express').Handler}
  */
 exports.asyncHandler = (fn) => {

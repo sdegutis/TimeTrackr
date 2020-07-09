@@ -55,6 +55,7 @@ const { requireAuthLevel } = require('./helpers');
 
 /**
  * @param {import('express').Request} req
+ * @returns {Promise<[number, object]>}
  */
 async function createUser(req) {
   const { name, email, password } = req.body;
@@ -80,6 +81,7 @@ async function createUser(req) {
 
 /**
  * @param {import('express').Request} req
+ * @returns {Promise<[number, object]>}
  */
 async function listUsers(req) {
   // const me = await User.findById(req.auth.id);
@@ -91,6 +93,7 @@ async function listUsers(req) {
 
 /**
  * @param {import('express').Request} req
+ * @returns {Promise<[number, object]>}
  */
 async function login(req) {
   const { email, password } = req.body;
