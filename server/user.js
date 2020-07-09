@@ -4,30 +4,74 @@ const Schema = mongoose.Schema;
 
 // MODEL
 
-const userSchema = new Schema({
-  name: String,
-  email: String,
-  password: String,
-  hash: String,
-  authLevel: Number,
-  targetDailyHours: Number,
-});
-
 const AUTH = {
   USER: 100,
   MANAGER: 200,
   ADMIN: 300,
 };
 
-userSchema.methods.usePassword = function (password) {
+/**
+ * @typedef UserClass
+ * 
+ * @property {string} name
+ * @property {string} email
+ * @property {string} hash
+ * @property {number} authLevel
+ * @property {number} targetDailyHours
+ * 
+ * @property {typeof usePassword} usePassword
+ * @property {typeof checkPassword} checkPassword
+ * @property {typeof setAuthLevel} setAuthLevel
+ * @property {typeof generateToken} generateToken
+ */
+
+const userSchema = new Schema({
+  name: String,
+  email: String,
+  hash: String,
+  authLevel: Number,
+  targetDailyHours: Number,
+});
+
+userSchema.method({
+  setAuthLevel,
+  usePassword,
+  checkPassword,
+  generateToken,
+});
+
+/**
+ * @this {InstanceType<User>}
+ * @param {string} role
+ */
+function setAuthLevel(role) {
+  this.authLevel = {
+    user: AUTH.USER,
+    manager: AUTH.MANAGER,
+    admin: AUTH.ADMIN,
+  }[role];
+}
+
+/**
+ * @this {InstanceType<User>}
+ * @param {string} password
+ */
+function usePassword(password) {
   this.hash = bcrypt.hashSync(password, 10);
-};
+}
 
-userSchema.methods.checkPassword = function (password) {
+/**
+ * @this {InstanceType<User>}
+ * @param {string} password
+ */
+function checkPassword(password) {
   return bcrypt.compareSync(password, this.hash);
-};
+}
 
-userSchema.methods.generateToken = function () {
+/**
+ * @this {InstanceType<User>}
+ */
+function generateToken() {
   return jwt.sign({
     id: this._id,
     email: this.email,
@@ -38,16 +82,9 @@ userSchema.methods.generateToken = function () {
       [AUTH.ADMIN]: 'admin',
     }[this.authLevel],
   }, process.env.JWT_SECRET);
-};
+}
 
-userSchema.methods.setAuthLevel = function (role) {
-  this.authLevel = {
-    user: AUTH.USER,
-    manager: AUTH.MANAGER,
-    admin: AUTH.ADMIN,
-  }[role];
-};
-
+/** @type { import('mongoose').Model<import('mongoose').Document & UserClass, {}> } */
 const User = mongoose.model('Users', userSchema);
 
 
@@ -77,6 +114,7 @@ async function createUser(req) {
     authLevel,
     targetDailyHours: 8,
   });
+
   user.usePassword(password);
   await user.save();
 
