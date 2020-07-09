@@ -18,5 +18,9 @@ Install NPM dependencies:
 
 ```sh
 $ npm install
-$ npm start
 ```
+
+## Run app
+
+* Run `npm start`
+* Open http://localhost:8080/
