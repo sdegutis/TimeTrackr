@@ -29,7 +29,7 @@ module.exports = (app) => {
       const myAuth = req.body._auth.authLevel;
 
       const { email } = req.params;
-      const { attr, val } = req.body;
+      let { attr, val } = req.body;
 
       if (!['name', 'email', 'targetDailyHours', 'role'].includes(attr))
         return [400, {}];
@@ -51,9 +51,18 @@ module.exports = (app) => {
         if (attr === 'role' && user.getRole() === 'admin') return [403, {}];
       }
 
-      console.log({ attr, val, email });
+      if (attr === 'targetDailyHours') {
+        val = parseInt(val);
+        if (isNaN(val)) return [400, {}];
+      }
 
-      user[attr] = val;
+      if (attr === 'role') {
+        user.setAuthLevel(val);
+      }
+      else {
+        user[attr] = val;
+      }
+
       await user.save();
 
       return [200, { ok: true }];
