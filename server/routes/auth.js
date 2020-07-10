@@ -1,4 +1,4 @@
-const { asyncHandler } = require('../helpers');
+const { asyncHandler, allowToken } = require('../helpers');
 const { User, AUTH } = require('../model/user');
 
 /**
@@ -44,6 +44,7 @@ module.exports = (app) => {
       if (!user.checkPassword(password)) return [401, {}];
 
       const token = user.generateToken();
+      allowToken(token);
       const secure = process.env.NODE_ENV !== 'development';
       res.cookie('jwt', token, { httpOnly: true, secure });
       return [200, { token }];

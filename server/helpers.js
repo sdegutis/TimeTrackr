@@ -14,6 +14,12 @@ function tokenFromBearer(req) {
   return token;
 }
 
+const tokenWhitelist = {};
+
+exports.allowToken = (token) => {
+  tokenWhitelist[token] = true;
+}
+
 /**
  * @param {number} requiredLevel
  * @returns {import('express').Handler}
@@ -22,7 +28,7 @@ exports.requireAuthLevel = (requiredLevel) => {
   return (req, res, next) => {
     // Always prefer Bearer
     const token = tokenFromBearer(req) || req.cookies.jwt;
-    if (!token) return res.status(401).json({ error: "Unauthorized" });
+    if (!token || !tokenWhitelist[token]) return res.status(401).json({ error: "Unauthorized" });
 
     /** @type {{authLevel: number}} */
     let tokenData;
