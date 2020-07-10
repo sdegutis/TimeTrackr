@@ -6,7 +6,7 @@ const { User, AUTH } = require('../model/user');
  */
 module.exports = (app) => {
 
-  app.get('/users/info', [
+  app.get('/account/info', [
     requireAuthLevel(AUTH.USER),
     asyncHandler(async function getInfo(req) {
       const user = await User.findById(req.body._auth.id);
@@ -24,7 +24,7 @@ module.exports = (app) => {
     }),
   ]);
 
-  app.post('/users/setinfo', [
+  app.post('/account/setinfo', [
     requireAuthLevel(AUTH.USER),
     asyncHandler(async function logout(req, res) {
       const me = await User.findById(req.body._auth.id);

@@ -24,7 +24,7 @@ export default /** @type {React.FC<Props>} */((props) => {
       const { token } = await request('POST', '/api/users/auth', { email, password });
       if (!token) return setError(true);
 
-      const { info } = await request('GET', '/api/users/info');
+      const { info } = await request('GET', '/api/account/info');
       setUser(info);
       pushPath("/account");
     })();

@@ -17,7 +17,7 @@ const App = /** @type {React.FC} */(() => {
   const [user, setUser] = React.useState(null);
 
   React.useEffect(() => {
-    request('GET', '/api/users/info').then(({ info }) => {
+    request('GET', '/api/account/info').then(({ info }) => {
       setUser(info);
     });
   }, []);

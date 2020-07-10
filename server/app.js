@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use('/api', router);
 
 require('./routes/auth')(router);
-require('./routes/user')(router);
+require('./routes/account')(router);
 
 if (process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {

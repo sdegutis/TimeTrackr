@@ -32,7 +32,7 @@ export default /** @type {React.FC<Props>} */((props) => {
       await request('POST', '/api/users/auth', { email, password });
 
       // Get and store info
-      const { info } = await request('GET', '/api/users/info');
+      const { info } = await request('GET', '/api/account/info');
       setUser(info);
       pushPath("/account");
     })();

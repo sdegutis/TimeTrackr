@@ -22,10 +22,10 @@ export default /** @type {React.FC<Props>} */((props) => {
 
     setError(false);
     (async () => {
-      const { ok } = await request('POST', '/api/users/setinfo', { name, targetDailyHours });
+      const { ok } = await request('POST', '/api/account/setinfo', { name, targetDailyHours });
       if (!ok) return setError(true);
 
-      const { info } = await request('GET', '/api/users/info');
+      const { info } = await request('GET', '/api/account/info');
       setUser(info);
 
       UIkit.notification({
