@@ -1,6 +1,6 @@
 import { React } from 'https://unpkg.com/es-react';
-
 import htm from 'https://unpkg.com/htm?module';
+import { FlatRouter, pushPath } from './router.js';
 const html = htm.bind(React.createElement);
 
 export const Timer = ({ count }) => {
@@ -177,43 +177,19 @@ const Root2 = /** @type {React.FC<{params: object}>} */((props) => {
   }, []);
 
   return html`
-    <b>usr = ${props.params.user} here!</b>
+    <p><a href="/" onClick=${pushPath}>home</a></p>
+    <p><a href="qux" onClick=${pushPath}>qux</a></p>
+    <p><b>usr = ${props.params.user} here!</b></p>
   `;
 });
 
-/**
- * @param {object} props
- * @param {{[pattern: string]: React.FC<{params: object | undefined}>}} props.routes
- * @param {React.ReactElement} props.loading
- */
-const FlatRouter = ({ routes, loading }) => {
-  const [path, setPath] = React.useState(location.pathname);
-
-  React.useEffect(() => {
-    const pathChanged = () => setPath(location.pathname);
-    window.addEventListener('popstate', pathChanged);
-    return () => {
-      window.removeEventListener('popstate', pathChanged);
-    };
-  }, []);
-
-  const route = Object.entries(routes).map(([pattern, Comp]) => {
-    const regex = pattern.replace(/:(\w+)/g, '(?<$1>[^/]+)');
-    const match = path.match(new RegExp(regex));
-    const params = match?.groups;
-    return { match, Comp, params, pattern };
-  }).find(({ match }) => match);
-
-  return html`
-    <${React.Suspense} fallback=${loading}>
-      <${route.Comp} params=${route.params}/>
-    <//>
-  `;
-};
+const Loading = html`
+  <b>loading...</b>
+`;
 
 export const App = () => {
   return html`
-    <${FlatRouter} loading=${html`<b>loading...</b>`} routes=${{
+    <${FlatRouter} loading=${Loading} routes=${{
       '/users': Root,
       '/login': Root,
       '/foo/bar2': Root,
