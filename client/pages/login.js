@@ -50,6 +50,7 @@ export default /** @type {React.FC<Props>} */((props) => {
               <label class="uk-form-label" for="form-stacked-text">Email</label>
               <div class="uk-form-controls">
                 <input class="uk-input"
+                  autoFocus
                   type="email"
                   value=${email}
                   onChange=${e => setEmail(e.target.value)}
