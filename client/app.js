@@ -11,11 +11,8 @@ export const Timer = ({ count }) => {
   `;
 };
 
-let authToken;
-
 async function request(method, url, body) {
   const headers = { 'Content-Type': 'application/json' };
-  if (authToken) headers.Authorization = `Bearer ${authToken}`;
   try {
     const response = await fetch(url, {
       method,
