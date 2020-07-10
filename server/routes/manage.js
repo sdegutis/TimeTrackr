@@ -9,7 +9,11 @@ module.exports = (app) => {
   app.get('/manage/users', [
     requireAuthLevel(AUTH.MANAGER),
     asyncHandler(async function listUsers(req) {
-      const users = (await User.find()).map(user => ({
+      const myAuth = req.body._auth.authLevel;
+      const users = (await User.find()).filter(user => {
+        if (myAuth === AUTH.ADMIN) return true;
+        return user.authLevel === AUTH.USER;
+      }).map(user => ({
         name: user.name,
         email: user.email,
         targetDailyHours: user.targetDailyHours,
