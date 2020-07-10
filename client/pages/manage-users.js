@@ -194,6 +194,13 @@ export default /** @type {React.FC<Props>} */((props) => {
           </tr>
         </thead>
         <tbody>
+          ${users.length === 0 && html`
+            <tr>
+              <td colspan="5">
+                <em>No entries.</em>
+              </td>
+            </tr>
+          `}
           ${users.map(u => html`
             <tr key=${u.email}>
               <td><${Edit} refresh=${refresh} email=${u.email} initial=${u.name} attr="name"/></td>
