@@ -6,7 +6,7 @@ import { canManageUsers } from '../util/permissions.js';
 import { NotAuthorized } from '../shared/unauthorized.js';
 import { request } from '../util/request.js';
 
-function notifyResult(ok) {
+function notifyResult(ok, error) {
   if (ok) {
     UIkit.notification({
       message: 'Operation succeeded.',
@@ -16,7 +16,7 @@ function notifyResult(ok) {
   }
   else {
     UIkit.notification({
-      message: 'Operation failed.',
+      message: error || 'Operation failed.',
       status: 'danger',
       pos: 'bottom-left',
     });
@@ -40,10 +40,10 @@ const Edit = ({ email, initial, attr, refresh }) => {
       setEditing(false);
       e.target.blur();
 
-      request('PATCH', `/api/manage/user/${email}`, { attr, val }).then(({ ok }) => {
+      request('PATCH', `/api/manage/user/${email}`, { attr, val }).then(({ ok, error }) => {
         setVal(initial);
         refresh();
-        notifyResult(ok);
+        notifyResult(ok, error);
       });
     }
   };
@@ -68,9 +68,9 @@ const Delete = ({ email, refresh }) => {
 
     if (!confirm(`Are you sure you want to delete user "${email}"?`)) return;
 
-    request('DELETE', `/api/manage/user/${email}`).then(({ ok }) => {
+    request('DELETE', `/api/manage/user/${email}`).then(({ ok, error }) => {
       refresh();
-      notifyResult(ok);
+      notifyResult(ok, error);
     });
   };
 

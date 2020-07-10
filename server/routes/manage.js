@@ -31,28 +31,28 @@ module.exports = (app) => {
       let { attr, val } = req.body;
 
       if (!['name', 'email', 'targetDailyHours', 'role'].includes(attr))
-        return [400, {}];
+        return [400, { error: "Invalid attribute" }];
 
       if (attr === 'role' && !['admin', 'manager', 'user'].includes(val))
-        return [400, {}];
+        return [400, { error: "Invalid role" }];
 
       const user = await User.findOne({ email });
-      if (!user) return [404, {}];
+      if (!user) return [404, { error: "User not found" }];
 
       if (myAuth === AUTH.MANAGER) {
         // Managers can't modify (or even see) managers/admins
-        if (user.authLevel > AUTH.USER) return [403, {}];
+        if (user.authLevel > AUTH.USER) return [403, { error: "Not enough permission" }];
 
         // Managers can't promote anyone to admin
-        if (attr === 'role' && val === 'admin') return [403, {}];
+        if (attr === 'role' && val === 'admin') return [403, { error: "Not enough permission" }];
 
         // Managers can't demote admins
-        if (attr === 'role' && user.getRole() === 'admin') return [403, {}];
+        if (attr === 'role' && user.getRole() === 'admin') return [403, { error: "Not enough permission" }];
       }
 
       if (attr === 'targetDailyHours') {
         val = parseInt(val);
-        if (isNaN(val)) return [400, {}];
+        if (isNaN(val)) return [400, { error: "Invalid target daily hours" }];
       }
 
       if (attr === 'role') {
