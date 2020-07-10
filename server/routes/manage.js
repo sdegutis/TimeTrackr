@@ -80,11 +80,11 @@ module.exports = (app) => {
       const { email } = req.params;
 
       const user = await User.findOne({ email });
-      if (!user) return [404, {}];
+      if (!user) return [404, { error: "User not found." }];
 
       // Managers can't delete (or even see) managers/admins
       if (myAuth === AUTH.MANAGER) {
-        if (user.authLevel > AUTH.USER) return [403, {}];
+        if (user.authLevel > AUTH.USER) return [403, { error: "Not enough permission." }];
       }
 
       await user.deleteOne();
