@@ -26,4 +26,11 @@ app.use('/api', router);
 
 user.setupRoutes(router);
 
+if (process.env.NODE_ENV === 'development') {
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(__dirname, '../client/index.html'));
+  });
+}
+
 module.exports = { app };
