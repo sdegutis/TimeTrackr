@@ -28,7 +28,7 @@ module.exports = (app) => {
       await user.save();
 
       const token = user.generateToken();
-      res.cookie('jwt', token, { httpOnly: true, secure: true });
+      res.cookie('jwt', token, { httpOnly: true });
       return [200, { token }];
     }),
   ]);
@@ -46,7 +46,7 @@ module.exports = (app) => {
       if (!user.checkPassword(password)) return [401, {}];
 
       const token = user.generateToken();
-      res.cookie('jwt', token, { httpOnly: true, secure: true });
+      res.cookie('jwt', token, { httpOnly: true });
       return [200, { token }];
     }),
   ]);
