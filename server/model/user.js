@@ -21,6 +21,7 @@ const AUTH = {
  * @property {typeof checkPassword} checkPassword
  * @property {typeof setAuthLevel} setAuthLevel
  * @property {typeof generateToken} generateToken
+ * @property {typeof getRole} getRole
  */
 
 const userSchema = new mongoose.Schema({
@@ -36,6 +37,7 @@ userSchema.method({
   usePassword,
   checkPassword,
   generateToken,
+  getRole,
 });
 
 /**
@@ -74,6 +76,17 @@ function generateToken() {
     id: this._id,
     authLevel: this.authLevel,
   }, process.env.JWT_SECRET);
+}
+
+/**
+ * @this {InstanceType<User>}
+ */
+function getRole() {
+  return {
+    [AUTH.USER]: 'user',
+    [AUTH.MANAGER]: 'manager',
+    [AUTH.ADMIN]: 'admin',
+  }[this.authLevel];
 }
 
 /** @type { import('mongoose').Model<import('mongoose').Document & UserClass, {}> } */

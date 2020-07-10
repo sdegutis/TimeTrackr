@@ -14,11 +14,7 @@ module.exports = (app) => {
         name: user.name,
         email: user.email,
         targetDailyHours: user.targetDailyHours,
-        role: {
-          [AUTH.USER]: 'user',
-          [AUTH.MANAGER]: 'manager',
-          [AUTH.ADMIN]: 'admin',
-        }[user.authLevel],
+        role: user.getRole(),
       };
       return [200, { info }];
     }),
@@ -34,14 +30,6 @@ module.exports = (app) => {
       await me.save();
 
       return [200, { ok: true }];
-    }),
-  ]);
-
-  app.get('/users', [
-    requireAuthLevel(AUTH.MANAGER),
-    asyncHandler(async function listUsers(req) {
-      const users = await User.find();
-      return [200, { users }];
     }),
   ]);
 

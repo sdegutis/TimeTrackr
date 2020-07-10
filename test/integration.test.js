@@ -69,7 +69,7 @@ test('account must be unique by email', async () => {
 test('listing users', async () => {
   const token = await createManager('me@example.com');
   const response = await request(app)
-    .get('/api/users')
+    .get('/api/manage/users')
     .set({
       'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ test('listing users', async () => {
   expect(response.status).toBe(200);
   expect(response.body).toMatchObject({
     users: [
-      { email: 'me@example.com', authLevel: AUTH.MANAGER, },
+      { email: 'me@example.com', role: 'manager', },
     ],
   });
 });
