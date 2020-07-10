@@ -18,11 +18,24 @@ export default /** @type {React.FC<Props>} */((props) => {
   return html`
     <${Header}/>
 
-    <p><a href="/foo/bar" onClick=${pushPath}>/foo/bar</a></p>
-    <p><a href="/login" onClick=${pushPath}>/login</a></p>
-    <p><a href="/signup" onClick=${pushPath}>/signup</a></p>
-    <p><a href="/foo/bar2" onClick=${pushPath}>/foo/bar2</a></p>
-    <p><a href="/foo/bar/qux" onClick=${pushPath}>/foo/bar/qux</a></p>
-    <p><b>inside ${props.params} here!</b></p>
+    <div class="uk-section uk-section-primary uk-light">
+        <div class="uk-container">
+
+            <h3>TimeTrackr</h3>
+
+            <div class="uk-grid-match uk-child-width-1-3@m" uk-grid="">
+                <div>
+                    <p>Useful way to track time for various client projects. Use the links above to navigate through this site.</p>
+                </div>
+                <div>
+                    <p>Notable features include the ability to track time for multiple clients, and generate time sheets.</p>
+                </div>
+                <div>
+                    <p>This project is made using modern web app best practices. It has no compile-time dependencies, either.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
   `;
 });
