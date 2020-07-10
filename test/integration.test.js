@@ -25,7 +25,7 @@ afterEach(async () => {
 });
 
 const { app } = require('../server/app');
-const { User, AUTH } = require('../server/user');
+const { User, AUTH } = require('../server/model/user');
 
 test('creating accounts', async () => {
   const response = await request(app).post('/api/users').send({

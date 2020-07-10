@@ -1,4 +1,4 @@
-const { User, AUTH } = require('../server/user');
+const { User, AUTH } = require('../server/model/user');
 
 test('password verification', async () => {
   const user = new User();
