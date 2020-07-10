@@ -181,8 +181,12 @@ const Root2 = /** @type {React.FC<{params: object}>} */((props) => {
   `;
 });
 
-
-export const App = () => {
+/**
+ * @param {object} props
+ * @param {{[pattern: string]: React.FC<{params: object | undefined}>}} props.routes
+ * @param {React.ReactElement} props.loading
+ */
+const FlatRouter = ({ routes, loading }) => {
   const [path, setPath] = React.useState(location.pathname);
 
   React.useEffect(() => {
@@ -193,36 +197,35 @@ export const App = () => {
     };
   }, []);
 
-  /** @type {{[pattern: string]: React.FC<{params: object | undefined}>}} */
-  const mapping = {
-    '/users': Root,
-    '/login': Root,
-    '/foo/bar2': Root,
-    '/foo/bar/:user': Root2,
-    '/foo/:user': Root2,
-    '/signup': Root,
-    '/': Root,
-  };
-
-  const route = Object.entries(mapping).map(([pattern, Comp]) => {
+  const route = Object.entries(routes).map(([pattern, Comp]) => {
     const regex = pattern.replace(/:(\w+)/g, '(?<$1>[^/]+)');
     const match = path.match(new RegExp(regex));
     const params = match?.groups;
     return { match, Comp, params, pattern };
   }).find(({ match }) => match);
 
-  console.log(route);
-
   return html`
-    <${React.Suspense} fallback=${html`<b>loading...</b>`}>
+    <${React.Suspense} fallback=${loading}>
       <${route.Comp} params=${route.params}/>
     <//>
   `;
+};
 
+export const App = () => {
+  return html`
+    <${FlatRouter} loading=${html`<b>loading...</b>`} routes=${{
+      '/users': Root,
+      '/login': Root,
+      '/foo/bar2': Root,
+      '/foo/bar/:user': Root2,
+      '/foo/:user': Root2,
+      '/signup': Root,
+      '/': Root,
+    }}/>
+  `;
 
   return html`
     <div class="uk-container">
-      <b>${path}</b>
       <div class="uk-child-width-expand@s uk-margin-top" uk-grid="">
         <div>
           <div class="uk-card uk-card-default uk-card-body">
