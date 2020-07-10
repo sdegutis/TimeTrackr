@@ -3,7 +3,7 @@ import { pushPath } from '../util/router.js';
 
 export const Header = () => {
   return html`
-    <nav class="uk-navbar-container" uk-navbar>
+    <nav class="uk-navbar-container" uk-navbar="">
       <div class="uk-navbar-left">
 
         <ul class="uk-navbar-nav">
