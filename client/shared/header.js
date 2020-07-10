@@ -20,6 +20,7 @@ export const Header = () => {
 
         <ul class="uk-navbar-nav">
           ${user ? html`
+            <li><a href="/account" onClick=${pushLink}>Account</a></li>
             <li><a href="/logout" onClick=${pushLink}>Logout</a></li>
             ` : html`
             <li><a href="/login" onClick=${pushLink}>Login</a></li>

@@ -1,5 +1,7 @@
 import { React, html } from '../util/deps.js';
 import { Header } from '../shared/header.js';
+import { UserContext } from '../user.js';
+import { pushPath } from '../util/router.js';
 
 /**
  * @typedef Props
@@ -7,6 +9,12 @@ import { Header } from '../shared/header.js';
  */
 
 export default /** @type {React.FC<Props>} */((props) => {
+  const { user } = React.useContext(UserContext);
+  if (user) {
+    pushPath('/account');
+    return null;
+  }
+
   return html`
     <${Header}/>
 
