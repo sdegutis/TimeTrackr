@@ -187,7 +187,7 @@ const Loading = html`
   <b>loading...</b>
 `;
 
-export const App = () => {
+export const App = /** @type {React.FC} */(() => {
   return html`
     <${FlatRouter} loading=${Loading} routes=${{
       '/users': Root,
@@ -271,4 +271,4 @@ export const App = () => {
   //     <${Timer} count=${count} />
   //   </div>
   // `;
-};
+});
