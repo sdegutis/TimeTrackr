@@ -1,6 +1,4 @@
-import { React } from 'https://unpkg.com/es-react';
-import htm from 'https://unpkg.com/htm?module';
-const html = htm.bind(React.createElement);
+import { React, html } from '../util/deps.js';
 
 // Slight hack, because we set this in a mount-effect.
 // This means we can only have one (top-level) FlatRouter.

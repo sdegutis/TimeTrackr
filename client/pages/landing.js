@@ -1,8 +1,6 @@
-import { React } from 'https://unpkg.com/es-react';
-import htm from 'https://unpkg.com/htm?module';
+import { React, html } from '../util/deps.js';
 import { pushPath } from '../util/router.js';
 import { Header } from '../shared/header.js';
-const html = htm.bind(React.createElement);
 
 /**
  * @typedef Props
