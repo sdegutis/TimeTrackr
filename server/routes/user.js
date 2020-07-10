@@ -27,9 +27,7 @@ module.exports = (app) => {
       user.usePassword(password);
       await user.save();
 
-      const token = user.generateToken();
-      res.cookie('jwt', token, { httpOnly: true });
-      return [200, { token }];
+      return [201, { ok: true }];
     }),
   ]);
 
@@ -46,19 +44,9 @@ module.exports = (app) => {
       if (!user.checkPassword(password)) return [401, {}];
 
       const token = user.generateToken();
-      res.cookie('jwt', token, { httpOnly: true });
+      const secure = process.env.NODE_ENV !== 'development';
+      res.cookie('jwt', token, { httpOnly: true, secure });
       return [200, { token }];
-    }),
-  ]);
-
-  app.get('/users', [
-    requireAuthLevel(AUTH.MANAGER),
-    asyncHandler(async function listUsers(req) {
-      const me = await User.findById(req.body._auth.id);
-      console.log({ me });
-
-      const users = await User.find();
-      return [200, { users }];
     }),
   ]);
 
@@ -74,6 +62,17 @@ module.exports = (app) => {
     asyncHandler(async function logout(req, res) {
       res.clearCookie('jwt');
       return [200, { ok: true }];
+    }),
+  ]);
+
+  app.get('/users', [
+    requireAuthLevel(AUTH.MANAGER),
+    asyncHandler(async function listUsers(req) {
+      const me = await User.findById(req.body._auth.id);
+      console.log({ me });
+
+      const users = await User.find();
+      return [200, { users }];
     }),
   ]);
 
