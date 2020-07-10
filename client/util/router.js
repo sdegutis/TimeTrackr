@@ -19,6 +19,7 @@ export function pushLink(e) {
 export function pushPath(path) {
   history.pushState(null, document.title, path);
   pathChanged();
+  return null;
 }
 
 /**

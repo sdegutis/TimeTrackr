@@ -10,10 +10,7 @@ import { pushPath } from '../util/router.js';
 
 export default /** @type {React.FC<Props>} */((props) => {
   const { user } = React.useContext(UserContext);
-  if (user) {
-    pushPath('/account');
-    return null;
-  }
+  if (user) return pushPath('/account');
 
   return html`
     <${Header}/>

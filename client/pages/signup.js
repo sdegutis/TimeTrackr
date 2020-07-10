@@ -17,10 +17,7 @@ export default /** @type {React.FC<Props>} */((props) => {
   const [error, setError] = React.useState(false);
 
   const { user, setUser } = React.useContext(UserContext);
-  if (user) {
-    pushPath('/account');
-    return null;
-  }
+  if (user) return pushPath('/account');
 
   const submit = (e) => {
     e.preventDefault();
