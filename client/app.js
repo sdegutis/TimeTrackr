@@ -31,6 +31,17 @@ async function request(method, url, body) {
 
 const LoginForm = () => {
 
+  const submit = (e) => {
+    e.preventDefault();
+    console.log('ok');
+
+    import('./foo.js').then(({ Foo }) => {
+      Foo();
+    });
+
+
+  };
+
   return html`
     <form>
       <fieldset class="uk-fieldset">
@@ -48,7 +59,7 @@ const LoginForm = () => {
           </div>
         </div>
         <div class="uk-margin">
-          <button class="uk-button uk-button-primary">Login</button>
+          <button class="uk-button uk-button-primary" onClick=${submit}>Login</button>
         </div>
       </fieldset>
     </form>
