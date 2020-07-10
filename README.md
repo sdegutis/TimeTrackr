@@ -30,5 +30,7 @@ These are recommended:
 
 ## Run app
 
-* Run `npm start`
-* Open http://localhost:8080/
+```sh
+$ npm start
+$ open http://localhost:8080/
+```
