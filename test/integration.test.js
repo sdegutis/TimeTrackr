@@ -34,9 +34,7 @@ test('creating accounts', async () => {
     password: 'foo',
   });
 
-  expect(response.body).toMatchObject({
-    token: /.+/,
-  });
+  expect(response.body).toMatchObject({ ok: true });
 
   const users = await User.find();
   expect(users).toMatchObject([
