@@ -66,6 +66,8 @@ const Delete = ({ email, refresh }) => {
   const run = (e) => {
     e.preventDefault();
 
+    if (!confirm(`Are you sure you want to delete user "${email}"?`)) return;
+
     request('DELETE', `/api/manage/user/${email}`).then(({ ok }) => {
       refresh();
       notifyResult(ok);
