@@ -9,4 +9,6 @@ declare module "https://unpkg.com/htm?module" {
   export default htm;
 }
 
+declare var UIkit: typeof import('uikit').default;
+
 declare var jwt_decode: (str: string) => object;

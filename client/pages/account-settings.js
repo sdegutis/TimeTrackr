@@ -27,6 +27,12 @@ export default /** @type {React.FC<Props>} */((props) => {
 
       const { info } = await request('GET', '/api/users/info');
       setUser(info);
+
+      UIkit.notification({
+        message: 'Settings changed successfully.',
+        status: 'success',
+        pos: 'bottom-left',
+      })
     })();
   };
 
