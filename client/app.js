@@ -178,27 +178,23 @@ export const App = () => {
     };
   }, []);
 
-  // const mapping = {
-  //   '/users': () => ('./pages/root.js'),
-  //   '/login': () => ('./pages/login.js'),
-  //   '/signup': () => ('./pages/signup.js'),
-  //   '/': () => ('./pages/root.js'),
-  // };
+  const mapping = {
+    '/users': Root,
+    '/login': Root,
+    '/foo/bar2': Root,
+    '/foo/:user': Root,
+    '/signup': Root,
+    '/': Root,
+  };
 
-  // import('./pages/root.js').then((mod) => {
-  //   console.log(mod.default);
-  // });
+  const route = Object.entries(mapping).map(([pattern, Comp]) => {
+    const regex = pattern.replace(/:(\w+)/g, '(?<$1>[^/]+)');
+    const match = path.match(new RegExp(regex));
+    const params = match?.groups;
+    return { match, Comp, params, pattern };
+  }).find(({ match }) => match);
 
-  // const x = Object.entries(mapping).find(([k, v]) => {
-  //   return true;
-  // });
-
-  // import(x[1]).then(mod => {
-  //   const fn = mod.default;
-  //   fn();
-  // });
-
-  // console.log();
+  console.log(route);
 
 
   return html`
