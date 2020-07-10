@@ -167,6 +167,14 @@ const SignUpForm = () => {
   `;
 };
 
+
+const Root2 = /** @type {React.FC<{params: object}>} */((props) => {
+  return html`
+    <b>usr = ${props.params.user} here!</b>
+  `;
+});
+
+
 export const App = () => {
   const [path, setPath] = React.useState(location.pathname);
 
@@ -178,11 +186,12 @@ export const App = () => {
     };
   }, []);
 
+  /** @type {{[pattern: string]: React.FC<{params: object | undefined}>}} */
   const mapping = {
     '/users': Root,
     '/login': Root,
     '/foo/bar2': Root,
-    '/foo/:user': Root,
+    '/foo/:user': Root2,
     '/signup': Root,
     '/': Root,
   };
@@ -195,6 +204,12 @@ export const App = () => {
   }).find(({ match }) => match);
 
   console.log(route);
+
+  return html`
+    <${React.Suspense} fallback=${html`<b>loading...</b>`}>
+      <${route.Comp} params=${route.params}/>
+    <//>
+  `;
 
 
   return html`

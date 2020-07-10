@@ -6,11 +6,11 @@ console.log('loading mod!');
 
 /**
  * @typedef Props
- * @property {number} foo
+ * @property {object} params
  */
 
 export default /** @type {React.FC<Props>} */((props) => {
   return html`
-    <b>inside ${props.foo} here!</b>
+    <b>inside ${props.params} here!</b>
   `;
 });
