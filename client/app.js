@@ -36,7 +36,7 @@ const LoginForm = () => {
     e.preventDefault();
     console.log('ok');
 
-    setOn(true);
+    setOn(on => !on);
 
     // import('./foo.js').then(({ Foo }) => {
     //   Foo();

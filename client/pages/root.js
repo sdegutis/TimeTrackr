@@ -4,8 +4,13 @@ const html = htm.bind(React.createElement);
 
 console.log('loading mod!');
 
-export default (props) => {
+/**
+ * @typedef Props
+ * @property {number} foo
+ */
+
+export default /** @type {React.FC<Props>} */((props) => {
   return html`
-    <b>inside here!</b>
+    <b>inside ${props.foo} here!</b>
   `;
-};
+});
