@@ -1,7 +1,7 @@
 /**
  * @param {string} method
  * @param {string} url
- * @param {object} body
+ * @param {object=} body
  */
 export async function request(method, url, body) {
   const headers = { 'Content-Type': 'application/json' };
