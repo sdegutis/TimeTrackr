@@ -8,11 +8,15 @@ let pathChanged = () => { };
 // It's easier to compose functions than disparate components.
 // Therefore this is just a function, which you set on onClick.
 // (Or you can compose it within existing click handlers.)
-export const pushPath = (e) => {
+export function pushLink(e) {
   e.preventDefault();
-  history.pushState(null, document.title, e.target.getAttribute('href'));
+  pushPath(e.target.getAttribute('href'));
+}
+
+export function pushPath(path) {
+  history.pushState(null, document.title, path);
   pathChanged();
-};
+}
 
 /**
  * @param {object} props

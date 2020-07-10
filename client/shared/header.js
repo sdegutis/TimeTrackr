@@ -1,5 +1,5 @@
 import { React, html } from '../util/deps.js';
-import { pushPath } from '../util/router.js';
+import { pushLink } from '../util/router.js';
 
 export const Header = () => {
   return html`
@@ -8,7 +8,7 @@ export const Header = () => {
       <div class="uk-navbar-left">
 
         <ul class="uk-navbar-nav">
-          <li class="uk-active"><a href="/" onClick=${pushPath}>TimeTrackr</a></li>
+          <li class="uk-active"><a href="/" onClick=${pushLink}>TimeTrackr</a></li>
         </ul>
 
       </div>
@@ -16,8 +16,8 @@ export const Header = () => {
       <div class="uk-navbar-right">
 
         <ul class="uk-navbar-nav">
-          <li><a href="/login" onClick=${pushPath}>Login</a></li>
-          <li><a href="/signup" onClick=${pushPath}>Signup</a></li>
+          <li><a href="/login" onClick=${pushLink}>Login</a></li>
+          <li><a href="/signup" onClick=${pushLink}>Signup</a></li>
         </ul>
 
       </div>

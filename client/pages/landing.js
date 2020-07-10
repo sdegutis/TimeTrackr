@@ -1,5 +1,5 @@
 import { React, html } from '../util/deps.js';
-import { pushPath } from '../util/router.js';
+import { pushLink } from '../util/router.js';
 import { Header } from '../shared/header.js';
 
 /**
@@ -18,7 +18,7 @@ export default /** @type {React.FC<Props>} */((props) => {
   return html`
     <${Header}/>
 
-    <div class="uk-section uk-section-primary uk-light">
+    <div class="uk-section uk-section-primary uk-section-large uk-light">
         <div class="uk-container">
 
             <h3>TimeTrackr</h3>
@@ -31,7 +31,7 @@ export default /** @type {React.FC<Props>} */((props) => {
                     <p>Notable features include the ability to track time for multiple clients, and generate time sheets.</p>
                 </div>
                 <div>
-                    <p>This project is made using modern web app best practices. It has no compile-time dependencies, either.</p>
+                    <p>This project is made using modern web app best practices. It also has no compile-time phase, it just runs.</p>
                 </div>
             </div>
 
