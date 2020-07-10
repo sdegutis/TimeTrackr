@@ -169,6 +169,13 @@ const SignUpForm = () => {
 
 
 const Root2 = /** @type {React.FC<{params: object}>} */((props) => {
+  React.useEffect(() => {
+    console.log('mounting');
+    return () => {
+      console.log('unmounting');
+    };
+  }, []);
+
   return html`
     <b>usr = ${props.params.user} here!</b>
   `;
@@ -191,6 +198,7 @@ export const App = () => {
     '/users': Root,
     '/login': Root,
     '/foo/bar2': Root,
+    '/foo/bar/:user': Root2,
     '/foo/:user': Root2,
     '/signup': Root,
     '/': Root,

@@ -10,6 +10,13 @@ console.log('loading mod!');
  */
 
 export default /** @type {React.FC<Props>} */((props) => {
+  React.useEffect(() => {
+    console.log('mounting');
+    return () => {
+      console.log('unmounting');
+    };
+  }, []);
+
   return html`
     <b>inside ${props.params} here!</b>
   `;
