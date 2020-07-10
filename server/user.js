@@ -151,6 +151,14 @@ async function listUsers(req) {
 /**
  * @type {import('./helpers').AsyncHandler}
  */
+async function getInfo(req) {
+  const info = await User.findById(req.body._auth.id);
+  return [200, { info }];
+}
+
+/**
+ * @type {import('./helpers').AsyncHandler}
+ */
 async function login(req, res) {
   const { email, password } = req.body;
   if (!email || !password)
@@ -163,6 +171,14 @@ async function login(req, res) {
   if (!user.checkPassword(password)) return [401, {}];
 
   return signInAsUser(res, user);
+}
+
+/**
+ * @type {import('./helpers').AsyncHandler}
+ */
+async function logout(req, res) {
+  res.clearCookie('jwt');
+  return [200, { ok: true }];
 }
 
 /**
@@ -181,6 +197,15 @@ function setupRoutes(app) {
   app.get('/users', [
     requireAuthLevel(AUTH.MANAGER),
     asyncHandler(listUsers),
+  ]);
+
+  app.get('/users/info', [
+    requireAuthLevel(AUTH.USER),
+    asyncHandler(getInfo),
+  ]);
+
+  app.post('/users/deauth', [
+    asyncHandler(logout),
   ]);
 
 }
