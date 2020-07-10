@@ -53,7 +53,16 @@ module.exports = (app) => {
   app.get('/users/info', [
     requireAuthLevel(AUTH.USER),
     asyncHandler(async function getInfo(req) {
-      const info = await User.findById(req.body._auth.id);
+      const user = await User.findById(req.body._auth.id);
+      const info = {
+        name: user.name,
+        email: user.email,
+        role: {
+          [AUTH.USER]: 'user',
+          [AUTH.MANAGER]: 'manager',
+          [AUTH.ADMIN]: 'admin',
+        }[user.authLevel],
+      };
       return [200, { info }];
     }),
   ]);

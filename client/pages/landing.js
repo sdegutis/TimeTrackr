@@ -1,5 +1,4 @@
 import { React, html } from '../util/deps.js';
-import { pushLink } from '../util/router.js';
 import { Header } from '../shared/header.js';
 
 /**
@@ -8,13 +7,6 @@ import { Header } from '../shared/header.js';
  */
 
 export default /** @type {React.FC<Props>} */((props) => {
-  React.useEffect(() => {
-    console.log('mounting');
-    return () => {
-      console.log('unmounting');
-    };
-  }, []);
-
   return html`
     <${Header}/>
 

@@ -8,11 +8,14 @@ let pathChanged = () => { };
 // It's easier to compose functions than disparate components.
 // Therefore this is just a function, which you set on onClick.
 // (Or you can compose it within existing click handlers.)
+/** @type {React.EventHandler<React.MouseEvent<HTMLAnchorElement>>} */
 export function pushLink(e) {
   e.preventDefault();
-  pushPath(e.target.getAttribute('href'));
+  const el = /** @type {HTMLAnchorElement} */(e.target);
+  pushPath(el.getAttribute('href'));
 }
 
+/** @param {string} path */
 export function pushPath(path) {
   history.pushState(null, document.title, path);
   pathChanged();

@@ -1,36 +1,8 @@
 import { React, html } from '../util/deps.js';
 import { Header } from '../shared/header.js';
 import { request } from '../util/request.js';
-import { pushLink, pushPath } from '../util/router.js';
-
-const SignUpForm = () => {
-
-  // React.useEffect(() => {
-
-  //   // request('POST', '/api/users/deauth').then(() => {
-  //   //   console.log('deauthed');
-
-  //   request('GET', '/api/users/info').then(info => {
-  //     console.log(info);
-  //   });
-
-  //   request('GET', '/api/users').then(users => {
-  //     console.log(users);
-  //   });
-
-  //   // });
-
-  // }, []);
-
-  return html`
-  `;
-};
-
-
-// request('GET', '/api/users').then(users => {
-//   console.log('well', users);
-// });
-
+import { pushPath, pushLink } from '../util/router.js';
+import { UserContext } from '../user.js';
 
 /**
  * @typedef Props
@@ -44,17 +16,29 @@ export default /** @type {React.FC<Props>} */((props) => {
 
   const [error, setError] = React.useState(false);
 
+  const { user, setUser } = React.useContext(UserContext);
+  if (user) {
+    pushPath('/account');
+    return null;
+  }
+
   const submit = (e) => {
     e.preventDefault();
-    request('POST', '/api/users', { name, email, password }).then(({ token }) => {
-      if (token) {
-        setError(false);
-        pushPath("/account");
-      }
-      else {
-        setError(true);
-      }
-    });
+
+    setError(false);
+    (async () => {
+      // Sign up
+      const { ok } = await request('POST', '/api/users', { name, email, password });
+      if (!ok) return setError(true);
+
+      // Login
+      await request('POST', '/api/users/auth', { email, password });
+
+      // Get and store info
+      const { info } = await request('GET', '/api/users/info');
+      setUser(info);
+      pushPath("/account");
+    })();
   };
 
   return html`
@@ -67,7 +51,7 @@ export default /** @type {React.FC<Props>} */((props) => {
             ${error && html`
               <div class="uk-alert-warning" uk-alert="">
                 <a class="uk-alert-close" uk-close="" onClick=${() => setError(false)}></a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                <p>An account already exists using this email. Please use another, or sign in with this email.</p>
               </div>
             `}
             <div class="uk-margin">

@@ -1,166 +1,85 @@
 import { React, html } from '../util/deps.js';
 import { Header } from '../shared/header.js';
-
-
-// request('POST', '/api/users/auth', {
-//   email: 'me@example.com',
-//   password: 'foo',
-// }).then(({ token }) => {
-//   console.log('token:', token);
-
-//   authToken = token;
-
-//   console.log(jwt_decode(authToken));
-
-// request('GET', '/api/users', {}).then(users => {
-//   console.log(users);
-// });
-
-
-const LoginForm = () => {
-  const submit = () => {
-
-  };
-
-  return html`
-    <form>
-      <fieldset class="uk-fieldset">
-        <legend class="uk-legend">Login</legend>
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Email</label>
-          <div class="uk-form-controls">
-            <input class="uk-input" type="email"/>
-          </div>
-        </div>
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Password</label>
-          <div class="uk-form-controls">
-            <input class="uk-input" type="password"/>
-          </div>
-        </div>
-        <div class="uk-margin">
-          <button class="uk-button uk-button-primary" onClick=${submit}>Login</button>
-        </div>
-      </fieldset>
-    </form>
-  `;
-};
-
-const SignUpForm = () => {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [password2, setPassword2] = React.useState('');
-
-  // React.useEffect(() => {
-
-  //   // request('POST', '/api/users/deauth').then(() => {
-  //   //   console.log('deauthed');
-
-  //   request('GET', '/api/users/info').then(info => {
-  //     console.log(info);
-  //   });
-
-  //   request('GET', '/api/users').then(users => {
-  //     console.log(users);
-  //   });
-
-  //   // });
-
-  // }, []);
-
-  const submit = (e) => {
-    e.preventDefault();
-
-    // request('POST', '/api/users', { name, email, password }).then(({ token }) => {
-    //   console.log({ token });
-
-    //   request('GET', '/api/users').then(users => {
-    //     console.log('well', users);
-    //   });
-
-    // });
-
-  };
-
-  return html`
-    <form onSubmit=${submit}>
-      <fieldset class="uk-fieldset">
-        <legend class="uk-legend">Sign-up</legend>
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Name</label>
-          <div class="uk-form-controls">
-            <input class="uk-input"
-              type="text"
-              value=${name}
-              onChange=${e => setName(e.target.value)}
-            />
-          </div>
-        </div>
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Email</label>
-          <div class="uk-form-controls">
-            <input class="uk-input"
-              type="email"
-              value=${email}
-              onChange=${e => setEmail(e.target.value)}
-            />
-          </div>
-        </div>
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Password</label>
-          <div class="uk-form-controls">
-            <input class="uk-input"
-              type="password"
-              value=${password}
-              onChange=${e => setPassword(e.target.value)}
-            />
-          </div>
-        </div>
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Again</label>
-          <div class="uk-form-controls">
-            <input class="uk-input"
-              type="password"
-              value=${password2}
-              onChange=${e => setPassword2(e.target.value)}
-            />
-          </div>
-        </div>
-        <div class="uk-margin">
-          <button
-            class="uk-button uk-button-primary"
-            onclick=${submit}
-            disabled=${password.length === 0 || password !== password2}
-          >
-            Sign-up
-          </button>
-        </div>
-      </fieldset>
-    </form>
-  `;
-};
-
+import { request } from '../util/request.js';
+import { pushPath } from '../util/router.js';
+import { UserContext } from '../user.js';
 
 /**
  * @typedef Props
  * @property {object} params
  */
 export default /** @type {React.FC<Props>} */((props) => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState(false);
+
+  const { user, setUser } = React.useContext(UserContext);
+  if (user) {
+    pushPath('/account');
+    return null;
+  }
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    setError(false);
+    (async () => {
+      const { token } = await request('POST', '/api/users/auth', { email, password });
+      if (!token) {
+        setError(true);
+        return;
+      }
+
+      const { info } = await request('GET', '/api/users/info');
+      setUser(info);
+      pushPath("/account");
+    })();
+  };
+
   return html`
     <${Header}/>
-    <div class="uk-container">
-      <div class="uk-child-width-expand@s uk-margin-top" uk-grid="">
-        <div>
-          <div class="uk-card uk-card-default uk-card-body">
-            <${LoginForm}/>
-          </div>
-        </div>
-        <div>
-          <div class="uk-card uk-card-default uk-card-body">
-            <${SignUpForm}/>
-          </div>
-        </div>
+    <div class="uk-container uk-margin uk-flex uk-flex-center">
+      <div class="uk-width-1-2">
+        <form onSubmit=${submit}>
+          <fieldset class="uk-fieldset">
+            <legend class="uk-legend">Login</legend>
+            ${error && html`
+              <div class="uk-alert-warning" uk-alert="">
+                <a class="uk-alert-close" uk-close="" onClick=${() => setError(false)}></a>
+                <p>Invalid email or password. Try again.</p>
+              </div>
+            `}
+            <div class="uk-margin">
+              <label class="uk-form-label" for="form-stacked-text">Email</label>
+              <div class="uk-form-controls">
+                <input class="uk-input"
+                  type="email"
+                  value=${email}
+                  onChange=${e => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
+            <div class="uk-margin">
+              <label class="uk-form-label" for="form-stacked-text">Password</label>
+              <div class="uk-form-controls">
+                <input class="uk-input"
+                  type="password"
+                  value=${password}
+                  onChange=${e => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+            <div class="uk-margin">
+              <button
+                class="uk-button uk-button-primary"
+                onclick=${submit}
+                disabled=${password.length === 0}
+              >
+                Login
+              </button>
+            </div>
+          </fieldset>
+        </form>
       </div>
     </div>
   `;

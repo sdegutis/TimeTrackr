@@ -1,7 +1,10 @@
 import { React, html } from '../util/deps.js';
 import { pushLink } from '../util/router.js';
+import { UserContext } from '../user.js';
 
 export const Header = () => {
+  const { user } = React.useContext(UserContext);
+
   return html`
     <nav class="uk-navbar-container" uk-navbar="">
 
@@ -16,8 +19,12 @@ export const Header = () => {
       <div class="uk-navbar-right">
 
         <ul class="uk-navbar-nav">
-          <li><a href="/login" onClick=${pushLink}>Login</a></li>
-          <li><a href="/signup" onClick=${pushLink}>Signup</a></li>
+          ${user ? html`
+            <li><a href="/logout" onClick=${pushLink}>Logout</a></li>
+            ` : html`
+            <li><a href="/login" onClick=${pushLink}>Login</a></li>
+            <li><a href="/signup" onClick=${pushLink}>Signup</a></li>
+          `}
         </ul>
 
       </div>
