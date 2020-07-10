@@ -96,22 +96,6 @@ const { asyncHandler } = require('./helpers');
 const { requireAuthLevel } = require('./helpers');
 
 /**
- * @param {import('express').Response} res
- * @param {InstanceType<User>} user
- * @returns {[number, object]}
- */
-function signInAsUser(res, user) {
-  const token = user.generateToken();
-
-  res.cookie('jwt', token, {
-    httpOnly: true,
-    secure: true,
-  });
-
-  return [200, { token }];
-}
-
-/**
  * @param {import('express').Router} app
  */
 function setupRoutes(app) {
@@ -137,7 +121,9 @@ function setupRoutes(app) {
       user.usePassword(password);
       await user.save();
 
-      return signInAsUser(res, user);
+      const token = user.generateToken();
+      res.cookie('jwt', token, { httpOnly: true, secure: true });
+      return [200, { token }];
     }),
   ]);
 
@@ -153,7 +139,9 @@ function setupRoutes(app) {
       if (!user) return [401, {}];
       if (!user.checkPassword(password)) return [401, {}];
 
-      return signInAsUser(res, user);
+      const token = user.generateToken();
+      res.cookie('jwt', token, { httpOnly: true, secure: true });
+      return [200, { token }];
     }),
   ]);
 
