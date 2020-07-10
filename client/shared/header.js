@@ -10,9 +10,7 @@ export const Header = () => {
 
       <div class="uk-navbar-left">
 
-        <ul class="uk-navbar-nav">
-          <li class="uk-active"><a href="/" onClick=${pushLink}>TimeTrackr</a></li>
-        </ul>
+        <a class="uk-navbar-item uk-logo" href="/" onClick=${pushLink}>TimeTrackr</a>
 
       </div>
 
@@ -31,5 +29,18 @@ export const Header = () => {
       </div>
 
     </nav>
+
+    ${user && html`
+      <div class="uk-container uk-margin">
+        <ul class="uk-subnav uk-subnav-pill" uk-margin="">
+          <li class="${location.pathname === '/account' ? 'uk-active' : ''}">
+            <a onClick=${pushLink} href="/account">Dashboard</a>
+          </li>
+          <li class="${location.pathname === '/account/settings' ? 'uk-active' : ''}">
+            <a onClick=${pushLink} href="/account/settings">Settings</a>
+          </li>
+        </div>
+      </ul>
+    `}
   `;
 };
