@@ -16,12 +16,17 @@ let authToken;
 async function request(method, url, body) {
   const headers = { 'Content-Type': 'application/json' };
   if (authToken) headers.Authorization = `Bearer ${authToken}`;
-  const response = await fetch(url, {
-    method,
-    headers,
-    body: JSON.stringify(body),
-  });
-  return await response.json();
+  try {
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: JSON.stringify(body),
+    });
+    return await response.json();
+  }
+  catch (err) {
+    return { err };
+  }
 }
 
 const LoginForm = () => {
