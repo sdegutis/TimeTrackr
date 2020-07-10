@@ -96,32 +96,6 @@ const { asyncHandler } = require('./helpers');
 const { requireAuthLevel } = require('./helpers');
 
 /**
- * @type {import('./helpers').AsyncHandler}
- */
-async function createUser(req, res) {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password)
-    return [400, { error: "Required: name, email, password" }];
-
-  const found = await User.findOne({ email });
-  if (found) return [409, {}];
-
-  const authLevel = AUTH.USER;
-
-  const user = new User({
-    name,
-    email,
-    authLevel,
-    targetDailyHours: 8,
-  });
-
-  user.usePassword(password);
-  await user.save();
-
-  return signInAsUser(res, user);
-}
-
-/**
  * @param {import('express').Response} res
  * @param {InstanceType<User>} user
  * @returns {[number, object]}
@@ -138,74 +112,75 @@ function signInAsUser(res, user) {
 }
 
 /**
- * @type {import('./helpers').AsyncHandler}
- */
-async function listUsers(req) {
-  const me = await User.findById(req.body._auth.id);
-  console.log({ me });
-
-  const users = await User.find();
-  return [200, { users }];
-}
-
-/**
- * @type {import('./helpers').AsyncHandler}
- */
-async function getInfo(req) {
-  const info = await User.findById(req.body._auth.id);
-  return [200, { info }];
-}
-
-/**
- * @type {import('./helpers').AsyncHandler}
- */
-async function login(req, res) {
-  const { email, password } = req.body;
-  if (!email || !password)
-    return [400, { error: "Required: email, password" }];
-
-  const user = await User.findOne({ email });
-
-  // Same result either way, to avoid email-sniffing
-  if (!user) return [401, {}];
-  if (!user.checkPassword(password)) return [401, {}];
-
-  return signInAsUser(res, user);
-}
-
-/**
- * @type {import('./helpers').AsyncHandler}
- */
-async function logout(req, res) {
-  res.clearCookie('jwt');
-  return [200, { ok: true }];
-}
-
-/**
  * @param {import('express').Router} app
  */
 function setupRoutes(app) {
 
   app.post('/users', [
-    asyncHandler(createUser),
+    asyncHandler(async function createUser(req, res) {
+      const { name, email, password } = req.body;
+      if (!name || !email || !password)
+        return [400, { error: "Required: name, email, password" }];
+
+      const found = await User.findOne({ email });
+      if (found) return [409, {}];
+
+      const authLevel = AUTH.USER;
+
+      const user = new User({
+        name,
+        email,
+        authLevel,
+        targetDailyHours: 8,
+      });
+
+      user.usePassword(password);
+      await user.save();
+
+      return signInAsUser(res, user);
+    }),
   ]);
 
   app.post('/users/auth', [
-    asyncHandler(login),
+    asyncHandler(async function login(req, res) {
+      const { email, password } = req.body;
+      if (!email || !password)
+        return [400, { error: "Required: email, password" }];
+
+      const user = await User.findOne({ email });
+
+      // Same result either way, to avoid email-sniffing
+      if (!user) return [401, {}];
+      if (!user.checkPassword(password)) return [401, {}];
+
+      return signInAsUser(res, user);
+    }),
   ]);
 
   app.get('/users', [
     requireAuthLevel(AUTH.MANAGER),
-    asyncHandler(listUsers),
+    asyncHandler(async function listUsers(req) {
+      const me = await User.findById(req.body._auth.id);
+      console.log({ me });
+
+      const users = await User.find();
+      return [200, { users }];
+    }),
   ]);
 
   app.get('/users/info', [
     requireAuthLevel(AUTH.USER),
-    asyncHandler(getInfo),
+    asyncHandler(async function getInfo(req) {
+      const info = await User.findById(req.body._auth.id);
+      return [200, { info }];
+    }),
   ]);
 
   app.post('/users/deauth', [
-    asyncHandler(logout),
+    asyncHandler(async function logout(req, res) {
+      res.clearCookie('jwt');
+      return [200, { ok: true }];
+    }),
   ]);
 
 }
