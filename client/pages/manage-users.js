@@ -5,23 +5,7 @@ import { pushPath } from '../util/router.js';
 import { canManageUsers } from '../util/permissions.js';
 import { NotAuthorized } from '../shared/unauthorized.js';
 import { request } from '../util/request.js';
-
-function notifyResult(ok, error) {
-  if (ok) {
-    UIkit.notification({
-      message: 'Operation succeeded.',
-      status: 'success',
-      pos: 'bottom-left',
-    });
-  }
-  else {
-    UIkit.notification({
-      message: error || 'Operation failed.',
-      status: 'danger',
-      pos: 'bottom-left',
-    });
-  }
-}
+import { notifyResult } from '../util/notify.js';
 
 const Edit = ({ email, initial, attr, refresh }) => {
   const [val, setVal] = React.useState(initial);

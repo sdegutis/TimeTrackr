@@ -13,7 +13,7 @@ module.exports = (app) => {
         return [400, { error: "Required: name, email, password" }];
 
       const found = await User.findOne({ email });
-      if (found) return [409, {}];
+      if (found) return [409, { error: 'An account already exists using this email. Please use another, or sign in with this email.' }];
 
       const authLevel = AUTH.USER;
 
