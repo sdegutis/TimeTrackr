@@ -1,9 +1,8 @@
 import { React } from 'https://unpkg.com/es-react';
 import htm from 'https://unpkg.com/htm?module';
 import { pushPath } from '../router.js';
+import { Header } from '../shared/header.js';
 const html = htm.bind(React.createElement);
-
-console.log('loading mod!');
 
 /**
  * @typedef Props
@@ -19,6 +18,8 @@ export default /** @type {React.FC<Props>} */((props) => {
   }, []);
 
   return html`
+    <${Header}/>
+
     <p><a href="/foo/bar" onClick=${pushPath}>/foo/bar</a></p>
     <p><a href="/login" onClick=${pushPath}>/login</a></p>
     <p><a href="/signup" onClick=${pushPath}>/signup</a></p>
