@@ -31,8 +31,9 @@ export const FlatRouter = ({ routes, loading }) => {
   }, []);
 
   const route = Object.entries(routes).map(([pattern, Comp]) => {
+    if (pattern === '') return { match: true, Comp };
     const regex = pattern.replace(/:(\w+)/g, '(?<$1>[^/]+)');
-    const match = path.match(new RegExp(regex));
+    const match = path.match(new RegExp(`^${regex}$`));
     const params = match?.groups;
     return { match, Comp, params, pattern };
   }).find(({ match }) => match);
