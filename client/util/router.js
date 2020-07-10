@@ -5,6 +5,9 @@ import { React, html } from '../util/deps.js';
 // ... Which I'm totally okay with.
 let pathChanged = () => { };
 
+// It's easier to compose functions than disparate components.
+// Therefore this is just a function, which you set on onClick.
+// (Or you can compose it within existing click handlers.)
 export const pushPath = (e) => {
   e.preventDefault();
   history.pushState(null, document.title, e.target.getAttribute('href'));
