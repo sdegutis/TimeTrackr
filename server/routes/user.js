@@ -57,6 +57,7 @@ module.exports = (app) => {
       const info = {
         name: user.name,
         email: user.email,
+        targetDailyHours: user.targetDailyHours,
         role: {
           [AUTH.USER]: 'user',
           [AUTH.MANAGER]: 'manager',
@@ -74,12 +75,22 @@ module.exports = (app) => {
     }),
   ]);
 
+  app.post('/users/setinfo', [
+    requireAuthLevel(AUTH.USER),
+    asyncHandler(async function logout(req, res) {
+      const me = await User.findById(req.body._auth.id);
+
+      me.name = req.body.name;
+      me.targetDailyHours = req.body.targetDailyHours;
+      await me.save();
+
+      return [200, { ok: true }];
+    }),
+  ]);
+
   app.get('/users', [
     requireAuthLevel(AUTH.MANAGER),
     asyncHandler(async function listUsers(req) {
-      const me = await User.findById(req.body._auth.id);
-      console.log({ me });
-
       const users = await User.find();
       return [200, { users }];
     }),

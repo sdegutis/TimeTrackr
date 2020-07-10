@@ -30,6 +30,10 @@ export const Header = () => {
 
     </nav>
 
+    <div>
+      Welcome, ${user.name}.
+    </div>
+    
     ${user && html`
       <div class="uk-container uk-margin">
         <ul class="uk-subnav uk-subnav-pill" uk-margin="">

@@ -5,6 +5,7 @@ import { React } from './util/deps.js';
  * @property {string} name
  * @property {string} email
  * @property {string} role
+ * @property {number} targetDailyHours
  */
 
 export const UserContext = React.createContext({
