@@ -27,7 +27,6 @@ module.exports = (app) => {
     requireAuthLevel(AUTH.MANAGER),
     asyncHandler(async function (req) {
       const myAuth = req.body._auth.authLevel;
-
       const { email } = req.params;
       let { attr, val } = req.body;
 
@@ -64,6 +63,26 @@ module.exports = (app) => {
       }
 
       await user.save();
+
+      return [200, { ok: true }];
+    }),
+  ]);
+
+  app.delete('/manage/user/:email', [
+    requireAuthLevel(AUTH.MANAGER),
+    asyncHandler(async function (req) {
+      const myAuth = req.body._auth.authLevel;
+      const { email } = req.params;
+
+      const user = await User.findOne({ email });
+      if (!user) return [404, {}];
+
+      // Managers can't delete (or even see) managers/admins
+      if (myAuth === AUTH.MANAGER) {
+        if (user.authLevel > AUTH.USER) return [403, {}];
+      }
+
+      await user.deleteOne();
 
       return [200, { ok: true }];
     }),
