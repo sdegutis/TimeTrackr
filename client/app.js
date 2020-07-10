@@ -29,21 +29,30 @@ async function request(method, url, body) {
   }
 }
 
+const Root = React.lazy(() => import('./pages/root.js'));
+
 const LoginForm = () => {
+
+  const [on, setOn] = React.useState(false);
 
   const submit = (e) => {
     e.preventDefault();
     console.log('ok');
 
-    import('./foo.js').then(({ Foo }) => {
-      Foo();
-    });
+    setOn(true);
+
+    // import('./foo.js').then(({ Foo }) => {
+    //   Foo();
+    // });
 
 
   };
 
   return html`
     <form>
+      <${React.Suspense} fallback=${html`<b>loading...</b>`}>
+        ${on && html`<${Root}/>`}
+      <//>
       <fieldset class="uk-fieldset">
         <legend class="uk-legend">Login</legend>
         <div class="uk-margin">
@@ -73,9 +82,20 @@ const SignUpForm = () => {
   const [password2, setPassword2] = React.useState('');
 
   React.useEffect(() => {
+
+    // request('POST', '/api/users/deauth').then(() => {
+    //   console.log('deauthed');
+
+    request('GET', '/api/users/info').then(info => {
+      console.log(info);
+    });
+
     request('GET', '/api/users').then(users => {
       console.log(users);
     });
+
+    // });
+
   }, []);
 
   const submit = (e) => {
@@ -151,8 +171,42 @@ const SignUpForm = () => {
 };
 
 export const App = () => {
+  const [path, setPath] = React.useState(location.pathname);
+
+  React.useEffect(() => {
+    const pathChanged = () => setPath(location.pathname);
+    window.addEventListener('popstate', pathChanged);
+    return () => {
+      window.removeEventListener('popstate', pathChanged);
+    };
+  }, []);
+
+  // const mapping = {
+  //   '/users': () => ('./pages/root.js'),
+  //   '/login': () => ('./pages/login.js'),
+  //   '/signup': () => ('./pages/signup.js'),
+  //   '/': () => ('./pages/root.js'),
+  // };
+
+  // import('./pages/root.js').then((mod) => {
+  //   console.log(mod.default);
+  // });
+
+  // const x = Object.entries(mapping).find(([k, v]) => {
+  //   return true;
+  // });
+
+  // import(x[1]).then(mod => {
+  //   const fn = mod.default;
+  //   fn();
+  // });
+
+  // console.log();
+
+
   return html`
     <div class="uk-container">
+      <b>${path}</b>
       <div class="uk-child-width-expand@s uk-margin-top" uk-grid="">
         <div>
           <div class="uk-card uk-card-default uk-card-body">
