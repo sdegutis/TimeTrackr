@@ -1,10 +1,12 @@
 import { React } from './util/deps.js';
 
+/** @typedef {'admin' | 'manager' | 'user'} Role */
+
 /**
  * @typedef User
  * @property {string} name
  * @property {string} email
- * @property {string} role
+ * @property {Role} role
  * @property {number} targetDailyHours
  */
 

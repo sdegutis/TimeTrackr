@@ -6,6 +6,7 @@ import { request } from './util/request.js';
 const Landing = React.lazy(() => import('./pages/landing.js'));
 const AccountDashboard = React.lazy(() => import('./pages/account-dashboard.js'));
 const AccountSettings = React.lazy(() => import('./pages/account-settings.js'));
+const ManageUsers = React.lazy(() => import('./pages/manage-users.js'));
 const Login = React.lazy(() => import('./pages/login.js'));
 const Logout = React.lazy(() => import('./pages/logout.js'));
 const SignUp = React.lazy(() => import('./pages/signup.js'));
@@ -30,6 +31,7 @@ const App = /** @type {React.FC} */(() => {
       '/logout': Logout,
       '/account': AccountDashboard,
       '/account/settings': AccountSettings,
+      '/manage/users': ManageUsers,
       '/signup': SignUp,
       '/': Landing,
       '': NotFound,

@@ -1,6 +1,7 @@
 import { React, html } from '../util/deps.js';
 import { pushLink } from '../util/router.js';
 import { UserContext } from '../user.js';
+import { canManageUsers } from '../util/permissions.js';
 
 export const Header = () => {
   const { user } = React.useContext(UserContext);
@@ -32,7 +33,7 @@ export const Header = () => {
 
     ${user && html`
       <div class="uk-container uk-margin">
-        Welcome, ${user.name}.
+        <h4>Welcome, ${user.name}.</h4>
       </div>
 
       <div class="uk-container uk-margin">
@@ -43,6 +44,12 @@ export const Header = () => {
           <li class="${location.pathname === '/account/settings' ? 'uk-active' : ''}">
             <a onClick=${pushLink} href="/account/settings">Settings</a>
           </li>
+
+          ${(canManageUsers(user.role)) && html`
+            <li class="${location.pathname === '/manage/users' ? 'uk-active' : ''}">
+              <a onClick=${pushLink} href="/manage/users">Manage Users</a>
+            </li>
+          `}
         </div>
       </ul>
     `}
