@@ -3,8 +3,6 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
-const setupUserRoutes = require('./routes/user');
-
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
@@ -24,7 +22,8 @@ router.use(bodyParser.json({
 app.use(cookieParser());
 app.use('/api', router);
 
-setupUserRoutes(router);
+require('./routes/auth')(router);
+require('./routes/user')(router);
 
 if (process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {
