@@ -62,7 +62,12 @@ module.exports = (app) => {
         user[attr] = val;
       }
 
-      await user.save();
+      try {
+        await user.save();
+      }
+      catch (e) {
+        return [400, { error: e }];
+      }
 
       return [200, { ok: true }];
     }),

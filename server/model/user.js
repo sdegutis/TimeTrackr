@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const AUTH = {
   USER: 100,
@@ -25,12 +26,14 @@ const AUTH = {
  */
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  hash: String,
-  authLevel: Number,
-  targetDailyHours: Number,
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  hash: { type: String, required: true },
+  authLevel: { type: Number, required: true },
+  targetDailyHours: { type: Number, required: true },
 });
+
+userSchema.plugin(uniqueValidator);
 
 userSchema.method({
   setAuthLevel,
