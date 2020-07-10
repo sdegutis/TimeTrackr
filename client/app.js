@@ -1,6 +1,6 @@
 import { React, ReactDOM } from 'https://unpkg.com/es-react';
 import htm from 'https://unpkg.com/htm?module';
-import { FlatRouter } from './router.js';
+import { FlatRouter } from './util/router.js';
 const html = htm.bind(React.createElement);
 
 const Landing = React.lazy(() => import('./pages/landing.js'));

@@ -1,6 +1,6 @@
 import { React } from 'https://unpkg.com/es-react';
 import htm from 'https://unpkg.com/htm?module';
-import { pushPath } from '../router.js';
+import { pushPath } from '../util/router.js';
 const html = htm.bind(React.createElement);
 
 export const Header = () => {
