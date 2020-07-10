@@ -10,6 +10,8 @@ module.exports = (app) => {
     requireAuthLevel(AUTH.USER),
     asyncHandler(async function getInfo(req) {
       const user = await User.findById(req.body._auth.id);
+      if (!user) return [401, { error: 'Token invalid.' }];
+
       const info = {
         name: user.name,
         email: user.email,
