@@ -25,7 +25,8 @@ $ npm install
 These are recommended:
 
 * VS Code
-* [Jest Runner](https://github.com/jest-community/vscode-jest) plugin
+* [Jest Runner](https://github.com/jest-community/vscode-jest) VS Code plugin
+* [vscode-lit-html](https://github.com/mjbvz/vscode-lit-html) VS Code plugin
 
 ## Run app
 
