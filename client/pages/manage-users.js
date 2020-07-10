@@ -30,7 +30,6 @@ export default /** @type {React.FC<Props>} */((props) => {
     <div class="uk-container">
 
       <table class="uk-table">
-        <caption>Users</caption>
         <thead>
             <tr>
                 <th>Name</th>
@@ -42,10 +41,10 @@ export default /** @type {React.FC<Props>} */((props) => {
         <tbody>
           ${users.map(user => html`
             <tr>
-                <td>${user.name}</td>
-                <td>${user.email}</td>
-                <td>${user.role}</td>
-                <td>${user.targetDailyHours}</td>
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td>${user.role}</td>
+              <td>${user.targetDailyHours}</td>
             </tr>
           `)}
         </tbody>

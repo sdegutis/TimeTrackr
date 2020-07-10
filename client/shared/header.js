@@ -50,8 +50,9 @@ export const Header = () => {
               <a onClick=${pushLink} href="/manage/users">Manage Users</a>
             </li>
           `}
-        </div>
-      </ul>
+        </ul>
+        <hr/>
+      </div>
     `}
   `;
 };
