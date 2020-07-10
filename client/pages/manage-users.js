@@ -210,13 +210,13 @@ export default /** @type {React.FC<Props>} */((props) => {
           </tr>
         </thead>
         <tbody>
-          ${users.map(user => html`
-            <tr key=${user.email}>
-              <td><${Edit} refresh=${refresh} email=${user.email} initial=${user.name} attr="name"/></td>
-              <td><${Edit} refresh=${refresh} email=${user.email} initial=${user.email} attr="email"/></td>
-              <td><${Edit} refresh=${refresh} email=${user.email} initial=${user.role} attr="role"/></td>
-              <td><${Edit} refresh=${refresh} email=${user.email} initial=${user.targetDailyHours} attr="targetDailyHours"/></td>
-              <td><${Delete} refresh=${refresh} email=${user.email} /></td>
+          ${users.map(u => html`
+            <tr key=${u.email}>
+              <td><${Edit} refresh=${refresh} email=${u.email} initial=${u.name} attr="name"/></td>
+              <td><${Edit} refresh=${refresh} email=${u.email} initial=${u.email} attr="email"/></td>
+              <td><${Edit} refresh=${refresh} email=${u.email} initial=${u.role} attr="role"/></td>
+              <td><${Edit} refresh=${refresh} email=${u.email} initial=${u.targetDailyHours} attr="targetDailyHours"/></td>
+              <td><${Delete} refresh=${refresh} email=${u.email} /></td>
             </tr>
           `)}
         </tbody>
