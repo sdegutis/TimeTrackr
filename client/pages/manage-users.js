@@ -79,6 +79,94 @@ const Delete = ({ email, refresh }) => {
   `;
 };
 
+const CreateUser = ({ refresh }) => {
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [password2, setPassword2] = React.useState('');
+
+  const submit = (e) => {
+    e.preventDefault();
+    request('POST', '/api/users', { name, email, password }).then(({ ok, error }) => {
+      refresh();
+      notifyResult(ok, error);
+
+      if (ok) {
+        UIkit.modal(document.getElementById('create-user-form')).hide();
+      }
+    });
+  };
+
+  return html`
+
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #create-user-form">
+      Create User
+    </button>
+
+    <!-- This is the modal -->
+    <div id="create-user-form" uk-modal="">
+      <div class="uk-modal-dialog uk-modal-body">
+          <button class="uk-modal-close-default" type="button" uk-close=""></button>
+          <h2 class="uk-modal-title">Create User</h2>
+          <form onSubmit=${submit}>
+            <fieldset class="uk-fieldset">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Name</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input"
+                    autoFocus=""
+                    type="text"
+                    value=${name}
+                    onChange=${e => setName(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Email</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input"
+                    type="email"
+                    value=${email}
+                    onChange=${e => setEmail(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Password</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input"
+                    type="password"
+                    value=${password}
+                    onChange=${e => setPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Again</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input"
+                    type="password"
+                    value=${password2}
+                    onChange=${e => setPassword2(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div class="uk-margin">
+                <button
+                  class="uk-button uk-button-primary"
+                  onclick=${submit}
+                  disabled=${password.length === 0 || password !== password2}
+                >
+                  Sign-up
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+    </div>
+  `;
+};
+
 /**
  * @typedef Props
  * @property {object} params
@@ -105,8 +193,12 @@ export default /** @type {React.FC<Props>} */((props) => {
 
     <div class="uk-container">
 
-      <p>Double click an entry to edit it. Press enter to commit. Press escape to cancel.</p>
+      <${CreateUser} refresh=${refresh} />
 
+      <hr/>
+      
+      <h3>User Listing</h3>
+      <p>Double click an entry to edit it. Press enter to commit. Press escape to cancel.</p>
       <table class="uk-table uk-table-divider">
         <thead>
           <tr>
