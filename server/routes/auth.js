@@ -40,8 +40,8 @@ module.exports = (app) => {
       const user = await User.findOne({ email });
 
       // Same result either way, to avoid email-sniffing
-      if (!user) return [401, {}];
-      if (!user.checkPassword(password)) return [401, {}];
+      if (!user) return [401, { error: "Invalid email or password. Try again." }];
+      if (!user.checkPassword(password)) return [401, { error: "Invalid email or password. Try again." }];
 
       const token = user.generateToken();
       allowToken(token);
