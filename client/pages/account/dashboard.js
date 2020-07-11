@@ -274,6 +274,26 @@ const ListEntries = ({ refreshes, refresh }) => {
     }
   };
 
+  const exportAsHTML = (e) => {
+    e.preventDefault();
+    const win = window.open();
+
+    const contentEl = document.getElementById('exportable-area');
+    const hidable = [
+      ...contentEl.getElementsByTagName('button'),
+      ...contentEl.getElementsByTagName('a'),
+    ];
+
+    hidable.forEach(el => el.hidden = true);
+
+    win.document.write(document.getElementsByTagName('head')[0].innerHTML);
+    win.document.write(`<body><div class="uk-container uk-margin-top">`);
+    win.document.write(contentEl.innerHTML);
+    win.document.write(`</div></body>`);
+
+    hidable.forEach(el => el.hidden = false);
+  };
+
   return html`
     <h3>View Entries</h3>
     <form class="uk-grid-small" uk-grid="">
@@ -323,12 +343,15 @@ const ListEntries = ({ refreshes, refresh }) => {
       </div>
     </form>
 
-    ${entries.length === 0 && html`
-      <p>
+    <p>
+      ${entries.length === 0 ? html`
         <em>No entries in this filter.</em>
-      </p>
-    `}
+      ` : html`
+        <button class='uk-button' onClick=${exportAsHTML}>Export as HTML</button>
+      `}
+    </p>
 
+    <div id="exportable-area">
     ${entries.map(({ date, entries, did, good }) => html`
       <div class="uk-child-width-expand@s" uk-grid="">
         <div class="uk-width-1-3@m">
@@ -363,6 +386,7 @@ const ListEntries = ({ refreshes, refresh }) => {
         </div>
       </div>
     `)}
+    </div>
   `;
 };
 
