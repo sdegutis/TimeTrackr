@@ -4,6 +4,7 @@
     "allowJs": true,
     "sourceRoot": ".",
     "inlineSourceMap": true,
-    "outDir": "out"
+    "outDir": "out",
+    "target": "ES6"
   }
 }

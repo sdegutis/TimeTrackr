@@ -51,7 +51,7 @@ const AddEntry = ({ refresh }) => {
   const choose = (proj) => (e) => {
     e.preventDefault();
     setProject(proj);
-    UIkit.dropdown(document.getElementById('choose-project-dropdown')).hide(false);
+    /**@type{*}*/(UIkit.dropdown(document.getElementById('choose-project-dropdown'))).hide(false);
   };
 
   return html`
@@ -270,7 +270,7 @@ const ListEntries = ({ refreshes, refresh }) => {
     e.preventDefault();
     set(date);
     for (const el of document.getElementsByClassName('date-dropdown')) {
-      UIkit.dropdown(el).hide(false);
+      /**@type{*}*/(UIkit.dropdown(el).hide)(false);
     }
   };
 
