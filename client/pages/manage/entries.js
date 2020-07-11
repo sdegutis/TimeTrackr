@@ -12,13 +12,43 @@ import { notifyResult } from '../../util/notify.js';
  * @property {object} params
  */
 
+// TODO: Consolidate all these admin forms
+//       into reusable React components
+//       with a consistent UI and API.
+const Delete = ({ id, refresh }) => {
+  const run = (e) => {
+    e.preventDefault();
+    if (!confirm(`Are you sure you want to delete this log entry?`)) return;
+
+    request('DELETE', `/api/manage/entries/${id}`).then(({ ok, error }) => {
+      refresh();
+      notifyResult(ok, error);
+    });
+  };
+
+  return html`<a href="" onClick=${run} uk-icon="icon: minus-circle"></a>`;
+};
+
 const Row = ({ entry, refresh }) => {
+  const [editing, setEditing] = React.useState(false);
+
+  const edit = (e) => {
+    e.preventDefault();
+    setEditing(true);
+  };
+
   return html`
     <tr>
       <td>${entry.date}</td>
       <td>${entry.project}</td>
       <td>${entry.hours}</td>
       <td>${entry.notes}</td>
+      <td>
+        <ul class="uk-iconnav">
+          <li><a href="" onClick=${edit} uk-icon="icon: pencil"></a></li>
+          <li><${Delete} refresh=${refresh} id=${entry.id} /></li>
+        </ul>
+      </td>
     </tr>
   `;
 };
@@ -60,6 +90,7 @@ export default /** @type {React.FC<Props>} */((props) => {
                     <th>Project</th>
                     <th class="uk-table-shrink">Hours</th>
                     <th class="uk-table-expand">Notes</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>

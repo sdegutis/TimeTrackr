@@ -112,4 +112,16 @@ module.exports = (app) => {
     }),
   ]);
 
+  app.delete('/manage/entries/:id', [
+    requireAuthLevel(AUTH.ADMIN),
+    asyncHandler(async function (req) {
+      const entry = await Entry.findById(req.params.id);
+      if (!entry) return [404, { error: 'Invalid entry ID.' }];
+
+      await entry.deleteOne();
+
+      return [200, { ok: true }];
+    }),
+  ]);
+
 };
