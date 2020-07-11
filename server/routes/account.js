@@ -8,7 +8,7 @@ module.exports = (app) => {
 
   app.get('/account/info', [
     requireAuthLevel(AUTH.USER),
-    asyncHandler(async function getInfo(req) {
+    asyncHandler(async function (req) {
       const user = await User.findById(req.body._auth.id);
       if (!user) return [401, { error: 'Token invalid.' }];
 
@@ -24,7 +24,7 @@ module.exports = (app) => {
 
   app.post('/account/setinfo', [
     requireAuthLevel(AUTH.USER),
-    asyncHandler(async function logout(req, res) {
+    asyncHandler(async function (req, res) {
       const me = await User.findById(req.body._auth.id);
 
       me.name = req.body.name;

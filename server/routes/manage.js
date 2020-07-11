@@ -8,7 +8,7 @@ module.exports = (app) => {
 
   app.get('/manage/users', [
     requireAuthLevel(AUTH.MANAGER),
-    asyncHandler(async function listUsers(req) {
+    asyncHandler(async function (req) {
       const myAuth = req.body._auth.authLevel;
       const users = (await User.find()).filter(user => {
         if (myAuth === AUTH.ADMIN) return true;

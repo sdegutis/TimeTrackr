@@ -9,7 +9,7 @@ module.exports = (app) => {
 
   app.post('/entries', [
     requireAuthLevel(AUTH.USER),
-    asyncHandler(async function getInfo(req) {
+    asyncHandler(async function (req) {
       const { project, hours, notes, date } = req.body;
       if (!project || !hours || !date)
         return [400, { error: "Required: project, hours, date" }];

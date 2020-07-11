@@ -7,7 +7,7 @@ const { User, AUTH } = require('../model/user');
 module.exports = (app) => {
 
   app.post('/users', [
-    asyncHandler(async function createUser(req, res) {
+    asyncHandler(async function (req, res) {
       const { name, email, password } = req.body;
       if (!name || !email || !password)
         return [400, { error: "Required: name, email, password" }];
@@ -32,7 +32,7 @@ module.exports = (app) => {
   ]);
 
   app.post('/users/auth', [
-    asyncHandler(async function login(req, res) {
+    asyncHandler(async function (req, res) {
       const { email, password } = req.body;
       if (!email || !password)
         return [400, { error: "Required: email, password" }];
@@ -52,7 +52,7 @@ module.exports = (app) => {
   ]);
 
   app.post('/users/deauth', [
-    asyncHandler(async function logout(req, res) {
+    asyncHandler(async function (req, res) {
       res.clearCookie('jwt');
       return [200, { ok: true }];
     }),
