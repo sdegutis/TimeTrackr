@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 /**
  * @typedef EntryClass
  * 
- * @property {string} userId
+ * @property {import('mongoose').Types.ObjectId} userId
  * @property {string} project
  * @property {string} notes
  * @property {string} start
@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
  */
 
 const entrySchema = new mongoose.Schema({
-  userId: String,
+  userId: mongoose.Types.ObjectId,
   project: String,
   notes: String,
   start: String,
