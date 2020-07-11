@@ -34,3 +34,12 @@ These are recommended:
 $ npm start
 $ open http://localhost:8080/
 ```
+
+## Upcoming features
+
+To start with, we're focusing on an MVP with minimal features needed to get the job done. As the user-base increases, we'll add the following features:
+
+- Pagination on all the pages
+- Electron client (status-bar for Mac, taskbar for Windows)
+- Change email & password
+- Email verification for new accounts
