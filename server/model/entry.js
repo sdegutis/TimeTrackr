@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
  * 
  * @property {string} userId
  * @property {string} project
+ * @property {string} notes
  * @property {string} start
  * @property {number} duration
  */
@@ -12,6 +13,7 @@ const mongoose = require('mongoose');
 const entrySchema = new mongoose.Schema({
   userId: String,
   project: String,
+  notes: String,
   start: String,
   duration: Number,
 });
