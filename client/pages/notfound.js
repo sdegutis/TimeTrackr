@@ -10,7 +10,8 @@ export default /** @type {React.FC<Props>} */((props) => {
     <${Header}/>
     <div class="uk-container uk-margin">
       <div class="uk-alert-warning" uk-alert="">
-        <h3>404: Page not found.</h3>
+        <h3>404</h3>
+        <p>Page not found.</p>
       </div>
     </div>
   `;
