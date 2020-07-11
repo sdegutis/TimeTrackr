@@ -231,9 +231,15 @@ const Row = ({ refresh, entry }) => {
 const ListEntries = ({ refreshes, refresh }) => {
   const { user } = React.useContext(UserContext);
   const [entries, setEntries] = React.useState([]);
+  const [total, setTotal] = React.useState(0);
+
+  const [fromDate, setFromDate] = React.useState('');
+  const [toDate, setToDate] = React.useState('');
 
   React.useEffect(() => {
-    request('GET', '/api/entries').then(({ entries }) => {
+    request('GET', `/api/entries?from=${fromDate}&to=${toDate}`).then(({ entries, total }) => {
+      setTotal(total);
+
       const sorted = _.sortBy(entries, 'date').reverse();
       const grouped = _.groupBy(sorted, 'date');
       const list = Object.entries(grouped).map(([date, entries]) => {
@@ -245,44 +251,89 @@ const ListEntries = ({ refreshes, refresh }) => {
     });
   }, [refreshes]);
 
-  if (entries.length === 0) return html`
+  if (total === 0) return html`
     <em>No entries yet. Add one above.</em>
   `;
 
-  return entries.map(({ date, entries, did, good }) => html`
-    <div class="uk-child-width-expand@s" uk-grid="">
-      <div class="uk-width-1-3@m">
-        <div class="uk-card uk-card-default uk-card-body uk-text-center">
-          <h4>
-            ${date}
-          </h4>
-          <h5>
-            ${good ? PassMark : FailMark} ${did} hours
-          </h5>
+  const update = (newVal, setter) => {
+    setter(newVal);
+    if (newVal.trim() === '' || newVal.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      refresh();
+    }
+  };
+
+  const dates = entries.map(({ date }) => date);
+
+  return html`
+    <h3>View Entries</h3>
+    <form class="uk-grid-small" uk-grid="">
+      <div class="uk-width-1-2@s">
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-text">From</label>
+          <div class="uk-form-controls">
+            <input class="uk-input"
+              type="text"
+              value=${fromDate}
+              onChange=${e => update(e.target.value, setFromDate)}
+            />
+          </div>
         </div>
       </div>
-      <div class="uk-width-2-3@m">
-        <div class="">
-          <table class="uk-table uk-table-small uk-table-divider uk-table-justify">
-            <thead>
-              <tr>
-                <th class="uk-table-shrink">Hours</th>
-                <th class="uk-table-shrink">Project</th>
-                <th class="uk-table-expand">Notes</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              ${entries.map(entry => html`
-                <${Row} refresh=${refresh} entry=${entry} />
-              `)}
-            </tbody>
-          </table>
+      <div class="uk-width-1-2@s">
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-text">To</label>
+          <div class="uk-form-controls">
+            <input class="uk-input"
+              type="text"
+              value=${toDate}
+              onChange=${e => update(e.target.value, setToDate)}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  `);
+    </form>
+
+    ${entries.length === 0 && html`
+      <p>
+        <em>No entries in this filter.</em>
+      </p>
+    `}
+
+    ${entries.map(({ date, entries, did, good }) => html`
+      <div class="uk-child-width-expand@s" uk-grid="">
+        <div class="uk-width-1-3@m">
+          <div class="uk-card uk-card-default uk-card-body uk-text-center">
+            <h4>
+              ${date}
+            </h4>
+            <h5>
+              ${good ? PassMark : FailMark} ${did} hours
+            </h5>
+          </div>
+        </div>
+        <div class="uk-width-2-3@m">
+          <div class="">
+            <table class="uk-table uk-table-small uk-table-divider uk-table-justify">
+              <thead>
+                <tr>
+                  <th class="uk-table-shrink">Hours</th>
+                  <th class="uk-table-shrink">Project</th>
+                  <th class="uk-table-expand">Notes</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${entries.map(entry => html`
+                  <${Row} refresh=${refresh} entry=${entry} />
+                `)}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `)}
+  `;
 };
 
 /**

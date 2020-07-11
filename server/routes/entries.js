@@ -48,14 +48,25 @@ module.exports = (app) => {
       const user = await User.findById(req.body._auth.id);
       if (!user) return [401, { error: 'Token invalid.' }];
 
-      const entries = (await Entry.find({ userId: user._id })).map(entry => ({
+      const from = maybeDate(req.query.from);
+      const to = maybeDate(req.query.to);
+
+      const total = await Entry.countDocuments({ userId: user._id });
+
+      let query = Entry.find({ userId: user._id });
+      if (from) query = query.gte('date', from);
+      if (to) query = query.lte('date', to);
+
+      const found = await query;
+
+      const entries = found.map(entry => ({
         project: entry.project,
         date: entry.date,
         hours: entry.hours,
         notes: entry.notes,
         id: entry._id,
       }));
-      return [200, { entries }];
+      return [200, { entries, total }];
     }),
   ]);
 
@@ -95,3 +106,9 @@ module.exports = (app) => {
   ]);
 
 };
+
+function maybeDate(date) {
+  if (typeof date !== 'string') return null;
+  const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+  return date.match(DATE_REGEX) ? date : null;
+}
