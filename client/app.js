@@ -2,6 +2,7 @@ import { React, ReactDOM, html } from './util/deps.js';
 import { FlatRouter } from './util/router.js';
 import { UserContext } from './shared/user.js';
 import { request } from './util/request.js';
+import { Header } from './shared/header.js';
 
 const Landing = React.lazy(() => import('./pages/landing.js'));
 const AccountDashboard = React.lazy(() => import('./pages/account/dashboard.js'));
@@ -27,6 +28,7 @@ const App = /** @type {React.FC} */(() => {
   // Auto-indenting isn't quite right yet here (oh well):
   return html`
     <${UserContext.Provider} value=${{ user, setUser }}>
+    <div>
     <${FlatRouter} loading=${Loading} routes=${{
       '/login': Login,
       '/logout': Logout,
@@ -38,6 +40,12 @@ const App = /** @type {React.FC} */(() => {
       '/': Landing,
       '': NotFound,
     }}/>
+    <div class="uk-section uk-section-muted uk-margin-xlarge-top">
+        <div class="uk-container">
+          <p>Copyright © Steven Degutis 2020. All rights reserved.</p>
+        </div>
+    </div>
+    </div>
     <//>
   `;
 });
