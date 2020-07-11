@@ -25,11 +25,12 @@ module.exports = (app) => {
   app.post('/account/setinfo', [
     requireAuthLevel(AUTH.USER),
     asyncHandler(async function (req, res) {
-      const me = await User.findById(req.body._auth.id);
+      const user = await User.findById(req.body._auth.id);
+      if (!user) return [401, { error: 'Token invalid.' }];
 
-      me.name = req.body.name;
-      me.targetDailyHours = req.body.targetDailyHours;
-      await me.save();
+      user.name = req.body.name;
+      user.targetDailyHours = req.body.targetDailyHours;
+      await user.save();
 
       return [200, { ok: true }];
     }),
