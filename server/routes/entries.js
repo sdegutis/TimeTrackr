@@ -41,4 +41,21 @@ module.exports = (app) => {
     }),
   ]);
 
+  app.get('/entries', [
+    requireAuthLevel(AUTH.USER),
+    asyncHandler(async function (req) {
+      // TODO: extract this common pattern of two lines
+      const user = await User.findById(req.body._auth.id);
+      if (!user) return [401, { error: 'Token invalid.' }];
+
+      const entries = (await Entry.find({ userId: user._id })).map(entry => ({
+        project: entry.project,
+        date: entry.date,
+        hours: entry.hours,
+        notes: entry.notes,
+      }));
+      return [200, { entries }];
+    }),
+  ]);
+
 };

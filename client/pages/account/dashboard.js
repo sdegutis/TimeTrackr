@@ -136,6 +136,55 @@ const AddEntry = ({ refresh }) => {
   `;
 };
 
+const PassMark = html`<span uk-icon="icon: check; ratio: 2" style=${{ color: 'green' }}></span>`;
+const FailMark = html`<span uk-icon="icon: close; ratio: 2" style=${{ color: 'crimson' }}></span>`;
+
+const ListEntries = ({ refreshes, refresh }) => {
+  const { user } = React.useContext(UserContext);
+  const [entries, setEntries] = React.useState([]);
+
+  React.useEffect(() => {
+    request('GET', '/api/entries').then(({ entries }) => {
+      const sorted = _.sortBy(entries, 'date').reverse();
+      const grouped = _.groupBy(sorted, 'date');
+      const list = Object.entries(grouped).map(([date, entries]) => {
+        const did = entries.map(e => e.hours).reduce((a, b) => a + b, 0);
+        const good = did >= user.targetDailyHours;
+        return { date, entries, did, good };
+      });
+      setEntries(list);
+    });
+  }, [refreshes]);
+
+  if (entries.length === 0) return html`
+    <em>No entries yet. Add one above.</em>
+  `;
+
+  return entries.map(({ date, entries, did, good }) => html`
+    <h4>
+      ${date} ${good ? PassMark : FailMark} ${did} hours
+    </h4>
+    <table class="uk-table uk-table-small uk-table-divider uk-table-justify">
+      <thead>
+        <tr>
+          <th class="uk-table-shrink">Hours</th>
+          <th class="uk-table-shrink">Project</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${entries.map(entry => html`
+        <tr>
+          <td>${entry.hours}</td>
+          <td>${entry.project}</td>
+          <td>${entry.notes}</td>
+        </tr>
+        `)}
+      </tbody>
+    </table>
+  `);
+};
+
 /**
  * @typedef Props
  * @property {object} params
@@ -145,7 +194,8 @@ export default /** @type {React.FC<Props>} */((props) => {
   const { user } = React.useContext(UserContext);
   if (!user) return pushPath('/login');
 
-  const refresh = () => { };
+  const [refreshes, setRefreshes] = React.useState(0);
+  const refresh = () => setRefreshes(r => r + 1);
 
   return html`
     <${Header}/>
@@ -153,6 +203,8 @@ export default /** @type {React.FC<Props>} */((props) => {
     <div class="uk-container">
 
       <${AddEntry} refresh=${refresh} />
+      <hr/>
+      <${ListEntries} refreshes=${refreshes} refresh=${refresh}/>
 
     </div>
   `;
