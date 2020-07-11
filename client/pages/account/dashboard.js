@@ -195,6 +195,11 @@ const Row = ({ refresh, entry }) => {
     />
   `;
 
+  const validFormData = editing && (
+    !isNaN(parseFloat(newValues.hours)) &&
+    newValues.project.length > 0
+  );
+
   return html`
     <tr>
       <td>${editing ? field('hours') : entry.hours}</td>
@@ -204,13 +209,13 @@ const Row = ({ refresh, entry }) => {
         <ul class="uk-iconnav">
           ${editing ? html`
               <li>
-                <button onClick=${submit} class="uk-button uk-button-default">
-                  <a href="" uk-icon="icon: check"></a>
+                <button disabled=${!validFormData} onClick=${submit} class="uk-button uk-button-default">
+                  <span uk-icon="icon: check"></span>
                 </button>
               </li>
               <li>
                 <button onClick=${cancel} class="uk-button uk-button-default">
-                  <a href="" uk-icon="icon: close"></a>
+                  <span uk-icon="icon: close"></span>
                 </button>
               </li>
             ` : html`
