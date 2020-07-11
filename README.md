@@ -42,4 +42,5 @@ To start with, we're focusing on an MVP with minimal features needed to get the 
 - Pagination on all the pages
 - Electron client (status-bar for Mac, taskbar for Windows)
 - Change email & password
+  - Users will no longer be identified by email in the system at that point
 - Email verification for new accounts

@@ -1,5 +1,6 @@
 const { asyncHandler, requireAuthLevel } = require('../helpers');
 const { User, AUTH } = require('../model/user');
+const { Entry } = require('../model/entry');
 
 /**
  * @param {import('express').Router} app
@@ -90,6 +91,24 @@ module.exports = (app) => {
       await user.deleteOne();
 
       return [200, { ok: true }];
+    }),
+  ]);
+
+  app.get('/manage/entries', [
+    requireAuthLevel(AUTH.ADMIN),
+    asyncHandler(async function (req) {
+      const rawEntries = await Entry.find().populate('userId');
+
+      const entries = rawEntries.map(entry => ({
+        project: entry.project,
+        notes: entry.notes,
+        hours: entry.hours,
+        date: entry.date,
+        id: entry._id,
+        user: entry.userId.email,
+      }));
+
+      return [200, { entries }];
     }),
   ]);
 
