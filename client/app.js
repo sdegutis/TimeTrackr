@@ -4,12 +4,12 @@ import { UserContext } from './user.js';
 import { request } from './util/request.js';
 
 const Landing = React.lazy(() => import('./pages/landing.js'));
-const AccountDashboard = React.lazy(() => import('./pages/account-dashboard.js'));
-const AccountSettings = React.lazy(() => import('./pages/account-settings.js'));
-const ManageUsers = React.lazy(() => import('./pages/manage-users.js'));
-const Login = React.lazy(() => import('./pages/login.js'));
-const Logout = React.lazy(() => import('./pages/logout.js'));
-const SignUp = React.lazy(() => import('./pages/signup.js'));
+const AccountDashboard = React.lazy(() => import('./pages/account/dashboard.js'));
+const AccountSettings = React.lazy(() => import('./pages/account/settings.js'));
+const ManageUsers = React.lazy(() => import('./pages/manage/users.js'));
+const Login = React.lazy(() => import('./pages/auth/login.js'));
+const Logout = React.lazy(() => import('./pages/auth/logout.js'));
+const SignUp = React.lazy(() => import('./pages/auth/signup.js'));
 const NotFound = React.lazy(() => import('./pages/notfound.js'));
 
 const Loading = html`<div uk-spinner="ratio: 3"></div>`;

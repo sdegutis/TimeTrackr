@@ -1,11 +1,11 @@
-import { React, html } from '../util/deps.js';
-import { Header } from '../shared/header.js';
-import { UserContext } from '../user.js';
-import { pushPath } from '../util/router.js';
-import { canManageUsers } from '../util/permissions.js';
-import { NotAuthorized } from '../shared/unauthorized.js';
-import { request } from '../util/request.js';
-import { notifyResult } from '../util/notify.js';
+import { React, html } from '../../util/deps.js';
+import { Header } from '../../shared/header.js';
+import { UserContext } from '../../user.js';
+import { pushPath } from '../../util/router.js';
+import { canManageUsers } from '../../util/permissions.js';
+import { NotAuthorized } from '../../shared/unauthorized.js';
+import { request } from '../../util/request.js';
+import { notifyResult } from '../../util/notify.js';
 
 const Edit = ({ email, initial, attr, refresh }) => {
   const [val, setVal] = React.useState(initial);

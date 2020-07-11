@@ -1,7 +1,7 @@
-import { React, html } from '../util/deps.js';
-import { Header } from '../shared/header.js';
-import { UserContext } from '../user.js';
-import { pushPath } from '../util/router.js';
+import { React, html } from '../../util/deps.js';
+import { Header } from '../../shared/header.js';
+import { UserContext } from '../../user.js';
+import { pushPath } from '../../util/router.js';
 
 /**
  * @typedef Props
