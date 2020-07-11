@@ -161,27 +161,43 @@ const ListEntries = ({ refreshes, refresh }) => {
   `;
 
   return entries.map(({ date, entries, did, good }) => html`
-    <h4>
-      ${date} ${good ? PassMark : FailMark} ${did} hours
-    </h4>
-    <table class="uk-table uk-table-small uk-table-divider uk-table-justify">
-      <thead>
-        <tr>
-          <th class="uk-table-shrink">Hours</th>
-          <th class="uk-table-shrink">Project</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${entries.map(entry => html`
-        <tr>
-          <td>${entry.hours}</td>
-          <td>${entry.project}</td>
-          <td>${entry.notes}</td>
-        </tr>
-        `)}
-      </tbody>
-    </table>
+
+    <div class="uk-child-width-expand@s" uk-grid="">
+      <div class="uk-width-1-3@m">
+        <div class="uk-card uk-card-default uk-card-body uk-text-center">
+          <h4>
+            ${date}
+          </h4>
+          <h5>
+            ${good ? PassMark : FailMark} ${did} hours
+          </h5>
+        </div>
+      </div>
+      <div class="uk-width-2-3@m">
+        <div class="">
+          <table class="uk-table uk-table-small uk-table-divider uk-table-justify">
+            <thead>
+              <tr>
+                <th class="uk-table-shrink">Hours</th>
+                <th class="uk-table-shrink">Project</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${entries.map(entry => html`
+              <tr>
+                <td>${entry.hours}</td>
+                <td>${entry.project}</td>
+                <td>${entry.notes}</td>
+              </tr>
+              `)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
   `);
 };
 
