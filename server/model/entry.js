@@ -19,6 +19,6 @@ const entrySchema = new mongoose.Schema({
 });
 
 /** @type { import('mongoose').Model<import('mongoose').Document & EntryClass, {}> } */
-const Entry = mongoose.model('Entrys', entrySchema);
+const Entry = mongoose.model('Entry', entrySchema);
 
 module.exports = { Entry };

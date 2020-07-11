@@ -93,6 +93,6 @@ function getRole() {
 }
 
 /** @type { import('mongoose').Model<import('mongoose').Document & UserClass, {}> } */
-const User = mongoose.model('Users', userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = { User, AUTH };
