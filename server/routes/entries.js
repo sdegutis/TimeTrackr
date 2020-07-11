@@ -96,9 +96,16 @@ module.exports = (app) => {
       if (!entry) return [404, { error: 'Invalid entry ID.' }];
       if (!entry.userId.toString() === user._id) return [403, { error: 'Invalid entry ID.' }];
 
-      entry.project = req.body.project;
-      entry.hours = req.body.hours;
-      entry.notes = req.body.notes;
+      const { project, hours, notes } = req.body;
+
+      if (project.trim().length > 0)
+        entry.project = project;
+
+      if (!isNaN(hours) && hours >= 0)
+        entry.hours = hours;
+
+      entry.notes = notes;
+
       await entry.save();
 
       return [200, { ok: true }];
