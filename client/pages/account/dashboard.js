@@ -51,7 +51,7 @@ const AddEntry = ({ refresh }) => {
   const choose = (proj) => (e) => {
     e.preventDefault();
     setProject(proj);
-    UIkit.dropdown(document.getElementById('choose-project-dropdown')).hide();
+    UIkit.dropdown(document.getElementById('choose-project-dropdown')).hide(false);
   };
 
   return html`
@@ -251,18 +251,28 @@ const ListEntries = ({ refreshes, refresh }) => {
     });
   }, [refreshes]);
 
+  React.useEffect(() => {
+    if ((fromDate.trim() === '' || fromDate.match(/^\d{4}-\d{2}-\d{2}$/)) &&
+      (toDate.trim() === '' || toDate.match(/^\d{4}-\d{2}-\d{2}$/))) {
+      refresh();
+    }
+  }, [fromDate, toDate]);
+
   if (total === 0) return html`
     <em>No entries yet. Add one above.</em>
   `;
 
-  const update = (newVal, setter) => {
-    setter(newVal);
-    if (newVal.trim() === '' || newVal.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      refresh();
+  const dates = entries.map(({ date }) => date);
+  const toDates = [...dates];
+  const fromDates = [...dates].reverse();
+
+  const chooseDate = (date, set) => e => {
+    e.preventDefault();
+    set(date);
+    for (const el of document.getElementsByClassName('date-dropdown')) {
+      UIkit.dropdown(el).hide(false);
     }
   };
-
-  const dates = entries.map(({ date }) => date);
 
   return html`
     <h3>View Entries</h3>
@@ -274,8 +284,16 @@ const ListEntries = ({ refreshes, refresh }) => {
             <input class="uk-input"
               type="text"
               value=${fromDate}
-              onChange=${e => update(e.target.value, setFromDate)}
+              onChange=${e => setFromDate(e.target.value)}
             />
+            <div class="date-dropdown" uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
+                <ul class="uk-nav uk-dropdown-nav">
+                  <li><a onClick=${chooseDate('', setFromDate)} href="">[Clear]</a></li>
+                  ${fromDates.map(date => html`
+                    <li><a onClick=${chooseDate(date, setFromDate)} href="">${date}</a></li>
+                  `)}
+                </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -286,8 +304,16 @@ const ListEntries = ({ refreshes, refresh }) => {
             <input class="uk-input"
               type="text"
               value=${toDate}
-              onChange=${e => update(e.target.value, setToDate)}
+              onChange=${e => setToDate(e.target.value)}
             />
+            <div class="date-dropdown" uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
+                <ul class="uk-nav uk-dropdown-nav">
+                  <li><a onClick=${chooseDate('', setToDate)} href="">[Clear]</a></li>
+                  ${toDates.map(date => html`
+                    <li><a onClick=${chooseDate(date, setToDate)} href="">${date}</a></li>
+                  `)}
+                </ul>
+            </div>
           </div>
         </div>
       </div>
