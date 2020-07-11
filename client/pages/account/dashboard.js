@@ -288,7 +288,9 @@ const ListEntries = ({ refreshes, refresh }) => {
             />
             <div class="date-dropdown" uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
                 <ul class="uk-nav uk-dropdown-nav">
-                  <li><a onClick=${chooseDate('', setFromDate)} href="">[Clear]</a></li>
+                  ${fromDate && html`
+                    <li><a onClick=${chooseDate('', setFromDate)} href="">[Clear]</a></li>
+                  `}
                   ${fromDates.map(date => html`
                     <li><a onClick=${chooseDate(date, setFromDate)} href="">${date}</a></li>
                   `)}
@@ -308,7 +310,9 @@ const ListEntries = ({ refreshes, refresh }) => {
             />
             <div class="date-dropdown" uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
                 <ul class="uk-nav uk-dropdown-nav">
-                  <li><a onClick=${chooseDate('', setToDate)} href="">[Clear]</a></li>
+                  ${toDate && html`
+                    <li><a onClick=${chooseDate('', setToDate)} href="">[Clear]</a></li>
+                  `}
                   ${toDates.map(date => html`
                     <li><a onClick=${chooseDate(date, setToDate)} href="">${date}</a></li>
                   `)}
