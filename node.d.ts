@@ -10,3 +10,4 @@ declare module "https://unpkg.com/htm?module" {
 }
 
 declare var UIkit: typeof import('uikit').default;
+declare var _: typeof import('lodash');
