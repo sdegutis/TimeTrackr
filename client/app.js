@@ -42,7 +42,7 @@ const App = /** @type {React.FC} */(() => {
     }}/>
     <div class="uk-section uk-section-muted uk-margin-xlarge-top">
         <div class="uk-container">
-          <p>Copyright © Steven Degutis 2020. All rights reserved.</p>
+          <p>Copyright © ${new Date().getFullYear()} Steven Degutis. All rights reserved.</p>
         </div>
     </div>
     </div>
