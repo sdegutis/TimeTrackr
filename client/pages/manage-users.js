@@ -141,7 +141,7 @@ const CreateUser = ({ refresh }) => {
                   onclick=${submit}
                   disabled=${password.length === 0 || password !== password2}
                 >
-                  Sign-up
+                  Create User
                 </button>
               </div>
             </fieldset>
