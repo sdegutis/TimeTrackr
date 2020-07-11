@@ -53,8 +53,26 @@ module.exports = (app) => {
         date: entry.date,
         hours: entry.hours,
         notes: entry.notes,
+        id: entry._id,
       }));
       return [200, { entries }];
+    }),
+  ]);
+
+  app.delete('/entries/:id', [
+    requireAuthLevel(AUTH.USER),
+    asyncHandler(async function (req) {
+      const user = await User.findById(req.body._auth.id);
+      if (!user) return [401, { error: 'Token invalid.' }];
+
+      const entry = await Entry.findById(req.params.id);
+      if (!entry) return [404, { error: 'Invalid entry ID.' }];
+      console.log(entry.userId);
+      if (!entry.userId.equals(user._id)) return [403, { error: 'Invalid entry ID.' }];
+
+      await entry.deleteOne();
+
+      return [200, { ok: true }];
     }),
   ]);
 

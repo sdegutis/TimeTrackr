@@ -139,6 +139,22 @@ const AddEntry = ({ refresh }) => {
 const PassMark = html`<span uk-icon="icon: check; ratio: 2" style=${{ color: 'green' }}></span>`;
 const FailMark = html`<span uk-icon="icon: close; ratio: 2" style=${{ color: 'crimson' }}></span>`;
 
+const Delete = ({ id, refresh }) => {
+  const run = (e) => {
+    e.preventDefault();
+    if (!confirm(`Are you sure you want to delete this log entry?`)) return;
+
+    request('DELETE', `/api/entries/${id}`).then(({ ok, error }) => {
+      refresh();
+      notifyResult(ok, error);
+    });
+  };
+
+  return html`
+    <a href="" onClick=${run} uk-icon="icon: minus-circle"></a>
+  `;
+};
+
 const ListEntries = ({ refreshes, refresh }) => {
   const { user } = React.useContext(UserContext);
   const [entries, setEntries] = React.useState([]);
@@ -180,16 +196,18 @@ const ListEntries = ({ refreshes, refresh }) => {
               <tr>
                 <th class="uk-table-shrink">Hours</th>
                 <th class="uk-table-shrink">Project</th>
-                <th>Notes</th>
+                <th class="uk-table-expand">Notes</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               ${entries.map(entry => html`
-              <tr>
-                <td>${entry.hours}</td>
-                <td>${entry.project}</td>
-                <td>${entry.notes}</td>
-              </tr>
+                <tr>
+                  <td>${entry.hours}</td>
+                  <td>${entry.project}</td>
+                  <td>${entry.notes}</td>
+                  <td><${Delete} id=${entry.id} refresh=${refresh} /></td>
+                </tr>
               `)}
             </tbody>
           </table>
