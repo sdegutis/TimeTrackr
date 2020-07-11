@@ -155,6 +155,63 @@ const Delete = ({ id, refresh }) => {
   `;
 };
 
+const Row = ({ refresh, entry }) => {
+  const [editing, setEditing] = React.useState(false);
+  const [newValues, setNewValues] = React.useState({ ...entry });
+
+  const edit = (e) => {
+    e.preventDefault();
+    setEditing(true);
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+    setEditing(false);
+
+    request('PATCH', `/api/entries/${entry.id}`, {
+      project: newValues.project,
+      hours: parseFloat(newValues.hours),
+      notes: newValues.notes,
+    }).then(({ ok, error }) => {
+      refresh();
+      notifyResult(ok, error);
+    });
+  };
+
+  const updateVal = (attr, val) => {
+    setNewValues(vals => ({ ...vals, [attr]: val }));
+  }
+
+  const field = (attr) => html`
+    <input class="uk-input"
+      value=${newValues[attr]}
+      onChange=${e => updateVal(attr, e.target.value)}
+    />
+  `;
+
+  return html`
+    <tr>
+      <td>${editing ? field('hours') : entry.hours}</td>
+      <td>${editing ? field('project') : entry.project}</td>
+      <td>${editing ? field('notes') : entry.notes}</td>
+      <td>
+        <ul class="uk-iconnav">
+          <li>
+            ${editing ? html`
+              <button onClick=${submit} class="uk-button uk-button-default">
+                <a href="" uk-icon="icon: check"></a>
+              </button>
+            ` : html`
+              <a href="" onClick=${edit} uk-icon="icon: pencil"></a>
+            `}
+          </li>
+          <li><${Delete} refresh=${refresh} id=${entry.id} /></li>
+        </ul>
+      </td>
+    </tr>
+  `;
+};
+
 const ListEntries = ({ refreshes, refresh }) => {
   const { user } = React.useContext(UserContext);
   const [entries, setEntries] = React.useState([]);
@@ -177,7 +234,6 @@ const ListEntries = ({ refreshes, refresh }) => {
   `;
 
   return entries.map(({ date, entries, did, good }) => html`
-
     <div class="uk-child-width-expand@s" uk-grid="">
       <div class="uk-width-1-3@m">
         <div class="uk-card uk-card-default uk-card-body uk-text-center">
@@ -198,24 +254,18 @@ const ListEntries = ({ refreshes, refresh }) => {
                 <th class="uk-table-shrink">Project</th>
                 <th class="uk-table-expand">Notes</th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               ${entries.map(entry => html`
-                <tr>
-                  <td>${entry.hours}</td>
-                  <td>${entry.project}</td>
-                  <td>${entry.notes}</td>
-                  <td><${Delete} id=${entry.id} refresh=${refresh} /></td>
-                </tr>
+                <${Row} refresh=${refresh} entry=${entry} />
               `)}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-
-
   `);
 };
 
