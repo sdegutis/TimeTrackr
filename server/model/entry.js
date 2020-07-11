@@ -6,16 +6,16 @@ const mongoose = require('mongoose');
  * @property {import('mongoose').Types.ObjectId} userId
  * @property {string} project
  * @property {string} notes
- * @property {string} start
- * @property {number} duration
+ * @property {string} date
+ * @property {number} hours
  */
 
 const entrySchema = new mongoose.Schema({
   userId: mongoose.Types.ObjectId,
   project: String,
   notes: String,
-  start: String,
-  duration: Number,
+  date: String,
+  hours: Number,
 });
 
 /** @type { import('mongoose').Model<import('mongoose').Document & EntryClass, {}> } */

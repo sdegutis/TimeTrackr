@@ -25,6 +25,7 @@ app.use('/api', router);
 require('./routes/auth')(router);
 require('./routes/account')(router);
 require('./routes/manage')(router);
+require('./routes/entries')(router);
 
 if (process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {
