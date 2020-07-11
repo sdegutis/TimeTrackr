@@ -7,6 +7,17 @@ const { Entry } = require('../model/entry');
  */
 module.exports = (app) => {
 
+  app.get('/entries/projects', [
+    requireAuthLevel(AUTH.USER),
+    asyncHandler(async function (req) {
+      const user = await User.findById(req.body._auth.id);
+      if (!user) return [401, { error: 'Token invalid.' }];
+
+      const projects = await Entry.distinct('project', { userId: user._id });
+      return [200, { projects }];
+    }),
+  ]);
+
   app.post('/entries', [
     requireAuthLevel(AUTH.USER),
     asyncHandler(async function (req) {

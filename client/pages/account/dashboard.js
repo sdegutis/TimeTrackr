@@ -8,10 +8,18 @@ import { notifyResult } from '../../util/notify.js';
 const today = () => new Date().toISOString().split('T')[0];
 
 const AddEntry = ({ refresh }) => {
+  const [potentialProjects, setPotentialProjects] = React.useState([]);
+
   const [project, setProject] = React.useState('');
   const [date, setDate] = React.useState(today());
   const [hours, setHours] = React.useState('');
   const [notes, setNotes] = React.useState('');
+
+  React.useEffect(() => {
+    request('GET', '/api/entries/projects').then((data) => {
+      setPotentialProjects(data.projects);
+    });
+  }, []);
 
   const submit = (e) => {
     e.preventDefault();
@@ -40,6 +48,12 @@ const AddEntry = ({ refresh }) => {
     date.match(/\d{4}-\d{2}-\d{2}/)
   );
 
+  const choose = (proj) => (e) => {
+    e.preventDefault();
+    setProject(proj);
+    UIkit.dropdown(document.getElementById('choose-project-dropdown')).hide();
+  };
+
   return html`
 
     <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #add-entry-form">
@@ -56,13 +70,22 @@ const AddEntry = ({ refresh }) => {
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-stacked-text">Project</label>
                 <div class="uk-form-controls">
-                  <input class="uk-input"
-                    required=true
-                    autoFocus=true
-                    type="text"
-                    value=${project}
-                    onChange=${e => setProject(e.target.value)}
-                  />
+                    <input class="uk-input"
+                      required=true
+                      autoFocus=true
+                      type="text"
+                      value=${project}
+                      onChange=${e => setProject(e.target.value)}
+                    />
+                    ${potentialProjects.length > 0 && html`
+                      <div id="choose-project-dropdown" uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
+                          <ul class="uk-nav uk-dropdown-nav">
+                            ${potentialProjects.map(proj => html`
+                              <li><a onClick=${choose(proj)} href="">${proj}</a></li>
+                            `)}
+                          </ul>
+                      </div>
+                    `}
                 </div>
               </div>
               <div class="uk-margin">
