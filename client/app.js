@@ -1,6 +1,6 @@
 import { React, ReactDOM, html } from './util/deps.js';
 import { FlatRouter } from './util/router.js';
-import { UserContext } from './user.js';
+import { UserContext } from './shared/user.js';
 import { request } from './util/request.js';
 
 const Landing = React.lazy(() => import('./pages/landing.js'));

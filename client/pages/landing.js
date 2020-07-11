@@ -1,6 +1,6 @@
 import { React, html } from '../util/deps.js';
 import { Header } from '../shared/header.js';
-import { UserContext } from '../user.js';
+import { UserContext } from '../shared/user.js';
 import { pushPath } from '../util/router.js';
 
 /**
@@ -9,10 +9,10 @@ import { pushPath } from '../util/router.js';
  */
 
 export default /** @type {React.FC<Props>} */((props) => {
-  const { user } = React.useContext(UserContext);
-  if (user) return pushPath('/account');
+    const { user } = React.useContext(UserContext);
+    if (user) return pushPath('/account');
 
-  return html`
+    return html`
     <${Header}/>
 
     <div class="uk-section uk-section-primary uk-section-large uk-light">

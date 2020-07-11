@@ -1,6 +1,6 @@
 import { React, html } from '../../util/deps.js';
 import { Header } from '../../shared/header.js';
-import { UserContext } from '../../user.js';
+import { UserContext } from '../../shared/user.js';
 import { pushPath } from '../../util/router.js';
 import { request } from '../../util/request.js';
 

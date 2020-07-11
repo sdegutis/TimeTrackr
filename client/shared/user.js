@@ -1,4 +1,4 @@
-import { React } from './util/deps.js';
+import { React } from '../util/deps.js';
 
 /** @typedef {'admin' | 'manager' | 'user'} Role */
 

@@ -1,6 +1,6 @@
 import { React, html } from '../util/deps.js';
 import { pushLink } from '../util/router.js';
-import { UserContext } from '../user.js';
+import { UserContext } from './user.js';
 import { canManageUsers } from '../util/permissions.js';
 
 export const Header = () => {
