@@ -78,7 +78,7 @@ module.exports = (app) => {
 
       const entry = await Entry.findById(req.params.id);
       if (!entry) return [404, { error: 'Invalid entry ID.' }];
-      if (!entry.userId.equals(user._id)) return [403, { error: 'Invalid entry ID.' }];
+      if (!entry.userId.toString() === user._id) return [403, { error: 'Invalid entry ID.' }];
 
       await entry.deleteOne();
 
@@ -94,7 +94,7 @@ module.exports = (app) => {
 
       const entry = await Entry.findById(req.params.id);
       if (!entry) return [404, { error: 'Invalid entry ID.' }];
-      if (!entry.userId.equals(user._id)) return [403, { error: 'Invalid entry ID.' }];
+      if (!entry.userId.toString() === user._id) return [403, { error: 'Invalid entry ID.' }];
 
       entry.project = req.body.project;
       entry.hours = req.body.hours;

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 /**
  * @typedef EntryClass
  * 
- * @property {import('mongoose').Types.ObjectId} userId
+ * @property {InstanceType<import('./user')['User']>} userId
  * @property {string} project
  * @property {string} notes
  * @property {string} date
@@ -11,11 +11,11 @@ const mongoose = require('mongoose');
  */
 
 const entrySchema = new mongoose.Schema({
-  userId: mongoose.Types.ObjectId,
-  project: String,
-  notes: String,
-  date: String,
-  hours: Number,
+  userId: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+  project: { type: String, required: true },
+  notes: { type: String, required: true },
+  date: { type: String, required: true },
+  hours: { type: Number, required: true },
 });
 
 /** @type { import('mongoose').Model<import('mongoose').Document & EntryClass, {}> } */
