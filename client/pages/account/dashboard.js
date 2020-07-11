@@ -164,6 +164,12 @@ const Row = ({ refresh, entry }) => {
     setEditing(true);
   };
 
+  const cancel = (e) => {
+    e.preventDefault();
+    setEditing(false);
+    setNewValues(entry);
+  };
+
   const submit = (e) => {
     e.preventDefault();
     setEditing(false);
@@ -196,16 +202,21 @@ const Row = ({ refresh, entry }) => {
       <td>${editing ? field('notes') : entry.notes}</td>
       <td>
         <ul class="uk-iconnav">
-          <li>
-            ${editing ? html`
-              <button onClick=${submit} class="uk-button uk-button-default">
-                <a href="" uk-icon="icon: check"></a>
-              </button>
+          ${editing ? html`
+              <li>
+                <button onClick=${submit} class="uk-button uk-button-default">
+                  <a href="" uk-icon="icon: check"></a>
+                </button>
+              </li>
+              <li>
+                <button onClick=${cancel} class="uk-button uk-button-default">
+                  <a href="" uk-icon="icon: close"></a>
+                </button>
+              </li>
             ` : html`
-              <a href="" onClick=${edit} uk-icon="icon: pencil"></a>
+              <li><a href="" onClick=${edit} uk-icon="icon: pencil"></a></li>
+              <li><${Delete} refresh=${refresh} id=${entry.id} /></li>
             `}
-          </li>
-          <li><${Delete} refresh=${refresh} id=${entry.id} /></li>
         </ul>
       </td>
     </tr>
