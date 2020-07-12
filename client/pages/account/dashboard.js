@@ -299,6 +299,13 @@ const ListEntries = ({ refreshes, refresh }) => {
 
     win.document.write(document.getElementsByTagName('head')[0].innerHTML);
     win.document.write(`<body><div class="uk-container uk-margin-top">`);
+
+    if (total !== entries.flatMap(entry => entry.entries).length) {
+      const from = fromDate || 'the beginning of time';
+      const to = toDate || 'the end of time';
+      win.document.write(`<p><b>Filtered:</b> ${from} to ${to}</p>`);
+    }
+
     win.document.write(contentEl.innerHTML);
     win.document.write(`</div></body>`);
 
