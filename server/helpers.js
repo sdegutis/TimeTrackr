@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { AUTH, User } = require('./model/user');
 
 exports.maybeDate = function (date) {
   if (typeof date !== 'string') return null;
@@ -41,17 +42,29 @@ exports.requireAuthLevel = (requiredLevel) => {
     const token = tokenFromBearer(req) || req.cookies.jwt;
     if (!token || !isWhitelisted(token)) return res.status(401).json({ error: "Unauthorized" });
 
-    /** @type {{authLevel: number}} */
+    /** @type {{id: number}} */
     let tokenData;
     try { tokenData = /** @type{*} */(jwt.verify(token, process.env.JWT_SECRET)); }
     catch (e) { return res.status(401).json({ error: "Unauthorized" }); }
 
-    if (tokenData.authLevel < requiredLevel) {
-      return res.status(403).json({ error: "Forbidden" });
+    if (requiredLevel > AUTH.USER) {
+      User.findById(tokenData.id).then(user => {
+        if (user.authLevel < requiredLevel) {
+          return res.status(403).json({ error: "Forbidden" });
+        }
+        else {
+          req.body._auth = {
+            id: user.id,
+            authLevel: user.authLevel,
+          };
+          return next();
+        }
+      });
     }
-
-    req.body._auth = tokenData;
-    return next();
+    else {
+      req.body._auth = tokenData;
+      return next();
+    }
   };
 };
 

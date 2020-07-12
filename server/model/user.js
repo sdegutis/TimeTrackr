@@ -77,7 +77,6 @@ function checkPassword(password) {
 function generateToken() {
   return jwt.sign({
     id: this._id,
-    authLevel: this.authLevel,
   }, process.env.JWT_SECRET);
 }
 
