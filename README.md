@@ -28,6 +28,25 @@ These are recommended:
 * [Jest Runner](https://github.com/jest-community/vscode-jest) VS Code plugin
 * [vscode-lit-html](https://github.com/mjbvz/vscode-lit-html) VS Code plugin
 
+## Testing
+
+```sh
+$ npm test
+```
+
+To try out admin/manager features:
+
+1. Sign up on the site
+2. Use `./bin/setlevel.js`
+
+For example:
+
+```sh
+$ ./bin/setlevel.js me@example.com admin
+```
+
+Pass no arguments for CLI help.
+
 ## Run app
 
 ```sh
