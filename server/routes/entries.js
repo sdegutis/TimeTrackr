@@ -1,4 +1,4 @@
-const { asyncHandler, requireAuthLevel } = require('../helpers');
+const { asyncHandler, requireAuthLevel, maybeDate } = require('../helpers');
 const { User, AUTH } = require('../model/user');
 const { Entry } = require('../model/entry');
 
@@ -113,9 +113,3 @@ module.exports = (app) => {
   ]);
 
 };
-
-function maybeDate(date) {
-  if (typeof date !== 'string') return null;
-  const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-  return date.match(DATE_REGEX) ? date : null;
-}

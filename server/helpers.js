@@ -1,5 +1,11 @@
 const jwt = require('jsonwebtoken');
 
+exports.maybeDate = function (date) {
+  if (typeof date !== 'string') return null;
+  const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+  return date.match(DATE_REGEX) ? date : null;
+}
+
 /**
  * @param {import('express').Request} req
  */
