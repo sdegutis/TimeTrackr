@@ -302,7 +302,7 @@ const ListEntries = ({ refreshes, refresh }) => {
 
     if (total !== entries.flatMap(entry => entry.entries).length) {
       const from = fromDate || 'the beginning of time';
-      const to = toDate || 'the end of time';
+      const to = toDate || today();
       win.document.write(`<p><b>Filtered:</b> ${from} to ${to}</p>`);
     }
 
