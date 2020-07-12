@@ -21,7 +21,13 @@ export default /** @type {React.FC<Props>} */((props) => {
 
     (async () => {
       const { token, error } = await request('POST', '/api/users/auth', { email, password });
-      if (!token) return notifyResult(false, error);
+      if (!token) {
+        UIkit.notification({
+          message: error,
+          status: 'danger',
+        });
+        return;
+      }
 
       const { info } = await request('GET', '/api/account/info');
       setUser(info);

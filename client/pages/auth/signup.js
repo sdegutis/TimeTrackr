@@ -24,7 +24,13 @@ export default /** @type {React.FC<Props>} */((props) => {
     (async () => {
       // Sign up
       const { ok, error } = await request('POST', '/api/users', { name, email, password });
-      if (!ok) return notifyResult(ok, error);
+      if (!ok) {
+        UIkit.notification({
+          message: error,
+          status: 'danger',
+        });
+        return;
+      }
 
       // Login
       await request('POST', '/api/users/auth', { email, password });
