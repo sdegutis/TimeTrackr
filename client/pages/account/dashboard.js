@@ -5,7 +5,18 @@ import { pushPath } from '../../util/router.js';
 import { request } from '../../util/request.js';
 import { notifyResult } from '../../util/notify.js';
 
-const today = () => new Date().toISOString().split('T')[0];
+const today = () => {
+  const d = new Date();
+  return [
+    d.getFullYear(),
+    d.getMonth() + 1,
+    d.getDate()
+  ]
+    .map(n => n
+      .toFixed()
+      .padStart(2, '0'))
+    .join('-');
+};
 
 const AddEntry = ({ refresh }) => {
   const [potentialProjects, setPotentialProjects] = React.useState([]);
