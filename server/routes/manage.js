@@ -88,6 +88,7 @@ module.exports = (app) => {
         if (user.authLevel > AUTH.USER) return [403, { error: "Not enough permission." }];
       }
 
+      await Entry.deleteMany({ userId: user._id });
       await user.deleteOne();
 
       return [200, { ok: true }];
