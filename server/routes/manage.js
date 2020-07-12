@@ -1,4 +1,4 @@
-const { asyncHandler, requireAuthLevel } = require('../helpers');
+const { asyncHandler, requireAuthLevel, maybeDate } = require('../helpers');
 const { User, AUTH } = require('../model/user');
 const { Entry } = require('../model/entry');
 
@@ -119,6 +119,33 @@ module.exports = (app) => {
       if (!entry) return [404, { error: 'Invalid entry ID.' }];
 
       await entry.deleteOne();
+
+      return [200, { ok: true }];
+    }),
+  ]);
+
+  app.patch('/manage/entries/:id', [
+    requireAuthLevel(AUTH.ADMIN),
+    asyncHandler(async function (req) {
+      const entry = await Entry.findById(req.params.id);
+      if (!entry) return [404, { error: 'Invalid entry ID.' }];
+
+      let { date, project, hours, notes } = req.body;
+
+      date = maybeDate(date);
+      if (date)
+        entry.date = date;
+
+      if (typeof project === 'string' && project.length > 0)
+        entry.project = project;
+
+      if (typeof notes === 'string' && notes.length > 0)
+        entry.notes = notes;
+
+      if (typeof hours === 'number' && !isNaN(hours) && hours > 0)
+        entry.hours = hours;
+
+      await entry.save();
 
       return [200, { ok: true }];
     }),
