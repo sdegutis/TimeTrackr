@@ -13,9 +13,9 @@ const mongoose = require('mongoose');
 const entrySchema = new mongoose.Schema({
   userId: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
   project: { type: String, required: true },
-  notes: { type: String, required: true },
   date: { type: String, required: true },
   hours: { type: Number, required: true },
+  notes: { type: String },
 });
 
 /** @type { import('mongoose').Model<import('mongoose').Document & EntryClass, {}> } */
