@@ -92,10 +92,10 @@ const Row = ({ entry, refresh }) => {
         <td><input class="uk-input" type="text" value=${newValues.hours}   onChange=${e => update(e.target.value, 'hours')} /></td>
         <td><input class="uk-input" type="text" value=${newValues.notes}   onChange=${e => update(e.target.value, 'notes')} /></td>
         <td>
-              <button disabled=${!validFormData} onClick=${submit} class="uk-button uk-button-default">
+              <button disabled=${!validFormData} onClick=${submit} class="uk-button uk-button-default uk-button-small">
                 <span uk-icon="icon: check"></span>
               </button>
-              <button onClick=${cancel} class="uk-button uk-button-default">
+              <button onClick=${cancel} class="uk-button uk-button-default uk-button-small">
                 <span uk-icon="icon: close"></span>
               </button>
         </td>
