@@ -267,6 +267,9 @@ const ListEntries = ({ refreshes, refresh }) => {
       (toDate.trim() === '' || toDate.match(/^\d{4}-\d{2}-\d{2}$/))) {
       refresh();
     }
+    for (const el of document.getElementsByClassName('date-dropdown')) {
+      /**@type{*}*/(UIkit.dropdown(el).hide)(false);
+    }
   }, [fromDate, toDate]);
 
   if (total === 0) return html`
@@ -280,9 +283,6 @@ const ListEntries = ({ refreshes, refresh }) => {
   const chooseDate = (date, set) => e => {
     e.preventDefault();
     set(date);
-    for (const el of document.getElementsByClassName('date-dropdown')) {
-      /**@type{*}*/(UIkit.dropdown(el).hide)(false);
-    }
   };
 
   const exportAsHTML = (e) => {
