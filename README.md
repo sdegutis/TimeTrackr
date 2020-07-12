@@ -20,13 +20,12 @@ Install NPM dependencies:
 $ npm install
 ```
 
-## Development environment
+## Run app
 
-These are recommended:
-
-* VS Code
-* [Jest Runner](https://github.com/jest-community/vscode-jest) VS Code plugin
-* [vscode-lit-html](https://github.com/mjbvz/vscode-lit-html) VS Code plugin
+```sh
+$ npm start
+$ open http://localhost:8080/
+```
 
 ## Testing
 
@@ -47,12 +46,26 @@ $ ./bin/setlevel.js me@example.com admin
 
 Pass no arguments for CLI help.
 
-## Run app
+## Development environment
 
-```sh
-$ npm start
-$ open http://localhost:8080/
-```
+These are recommended:
+
+* VS Code
+* [Jest Runner](https://github.com/jest-community/vscode-jest) VS Code plugin
+* [vscode-lit-html](https://github.com/mjbvz/vscode-lit-html) VS Code plugin
+
+## Architectural design
+
+- Make REST the real first-class citizen
+  - All web app actions should also be available via REST
+  - All REST responses should return a valid JSON object
+  - All errors should be returned via root "error" key
+  - All REST responses should also use semantic HTTP codes
+- Avoid all build phases for super-rapid prototyping:
+  - TypeScript is supported within VS Code
+  - JSDoc is used to provide extra hints to TSC
+  - JSX is faked via [htm](https://github.com/developit/htm) package
+  - Modules use `<script type="module">` (see [JS Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules))
 
 ## Upcoming features
 
