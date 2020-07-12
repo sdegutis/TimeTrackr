@@ -98,13 +98,14 @@ module.exports = (app) => {
 
       const { project, hours, notes } = req.body;
 
-      if (project.trim().length > 0)
+      if (typeof project === 'string' && project.trim().length > 0)
         entry.project = project;
 
-      if (!isNaN(hours) && hours >= 0)
+      if (typeof hours === 'number' && !isNaN(hours) && hours >= 0)
         entry.hours = hours;
 
-      entry.notes = notes;
+      if (typeof notes === 'string')
+        entry.notes = notes;
 
       await entry.save();
 
