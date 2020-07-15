@@ -4,6 +4,10 @@
 
 ---
 
+## Screenshot
+
+![Screenshot](screenshot.png)
+
 ## Setup
 
 Install and run MongoDB:
