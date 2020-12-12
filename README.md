@@ -75,9 +75,9 @@ These are recommended:
 
 To start with, we're focusing on an MVP with minimal features needed to get the job done. As the user-base increases, we'll add the following features:
 
-- Audit log of all system changes
-- Pagination on all the pages
-- Electron client (status-bar for Mac, taskbar for Windows)
-- Change email & password
-  - Users will no longer be identified by email in the system at that point
-- Email verification for new accounts
+- [ ] Audit log of all system changes
+- [ ] Pagination on all the pages
+- [ ] Electron client (status-bar for Mac, taskbar for Windows)
+- [ ] Change email & password
+  - [ ] Users will no longer be identified by email in the system at that point
+- [ ] Email verification for new accounts
